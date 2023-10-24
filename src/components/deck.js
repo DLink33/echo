@@ -1,5 +1,4 @@
 const Card = require("./Card");
-//import { Card } from "./Card.js";
 
 var colors = ["red", "yellow", "blue", "green"];
 
@@ -9,12 +8,13 @@ class Deck {
     this.discardPile = [];
     this.drawPile = [];
     this.createDeck();
+    this.shuffleCards(this.cards);
   }
   createDeck() {
     // for each color...
     for (let i = 0; i < 4; i++) {
       // Add one zero card
-      this.cards.push(new Card(colors[i], "0"));
+      this.cards.push(new Card("number", colors[i], "0"));
       for (var j = 1; j <= 9; j++) {
         // Add two version of the 1-9
         this.cards.push(new Card("number", colors[i], j.toString()));
@@ -29,6 +29,23 @@ class Deck {
     for (j = 0; j < 4; j++) {
       this.cards.push(new Card("wild draw 4", "wild", "+4"));
       this.cards.push(new Card("wild", "wild", "~"));
+    }
+  }
+  shuffleCards(cards) {
+    let size = cards.length;
+    for (let i = size - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]];
+    }
+  }
+  resetDeck() {
+    this.cards = [];
+    this.createDeck();
+  }
+  printDeck() {
+    let size = this.cards.length;
+    for (var i = 0; i < size; i++) {
+      console.log(this.cards[i].color, this.cards[i].symbol);
     }
   }
 }

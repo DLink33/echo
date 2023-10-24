@@ -1,7 +1,10 @@
 const Deck = require("../src/components/Deck");
-//import { Deck } from '../components/Deck';
 
-test("Instantiating Deck object should create a deck of 108 cards", () => {
+beforeAll(() => {
+  var deck = new Deck();
+});
+
+test("Instantiated Deck object should create a deck of 108 cards", () => {
   // Arrange
   const input = {};
 
