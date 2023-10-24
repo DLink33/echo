@@ -1,0 +1,30 @@
+{
+  "name": "echo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DLink33/echo.git"
+  },
+  "keywords": [
+    "echo",
+    "regem",
+    "ludos"
+  ],
+  "author": "David Linkowski",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DLink33/echo/issues"
+  },
+  "homepage": "https://github.com/DLink33/echo#readme",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
