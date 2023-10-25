@@ -6,9 +6,8 @@ class Deck {
   constructor() {
     this.cards = [];
     this.discardPile = [];
-    this.drawPile = [];
     this.createDeck();
-    this.shuffleCards(this.cards);
+    this.drawPile = this.cards;
   }
   createDeck() {
     // for each color...
@@ -42,11 +41,20 @@ class Deck {
     this.cards = [];
     this.createDeck();
   }
-  printDeck() {
-    let size = this.cards.length;
-    for (var i = 0; i < size; i++) {
-      console.log(this.cards[i].color, this.cards[i].symbol);
+  drawCard(numCards) {
+    if (this.drawPile.length === 0) {
+      this.drawPile = this.discardPile;
+      this.discardPile = [];
+      this.shuffleCards(this.drawPile);
     }
+    let drawnCards = [];
+    for (let i = 0; i < numCards; i++) {
+      drawnCards.push(this.drawPile.pop());
+    }
+    return drawnCards;
+  }
+  toString() {
+    return this.cards.join(", ");
   }
 }
 

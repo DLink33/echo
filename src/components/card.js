@@ -4,6 +4,9 @@ class Card {
     this.color = color;
     this.symbol = symbol;
   }
+  toString() {
+    return `${this.color} ${this.symbol}`;
+  }
 }
 
 module.exports = Card;
