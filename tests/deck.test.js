@@ -1,4 +1,4 @@
-const Deck = require("../src/components/Deck");
+const deck = require("../src/components/Deck");
 
 beforeAll(() => {
   var deck = new Deck();

@@ -41,17 +41,28 @@ class Deck {
     this.cards = [];
     this.createDeck();
   }
-  drawCard(numCards) {
-    if (this.drawPile.length === 0) {
-      this.drawPile = this.discardPile;
-      this.discardPile = [];
-      this.shuffleCards(this.drawPile);
-    }
+  draw(numCards) {
+    let diff = this.drawPile.length - numCards;
     let drawnCards = [];
+    if (diff < 0) {
+      //if there are too few cards in the draw pile
+      while (this.drawPile.length > 0) {
+        drawnCards.push(this.drawPile.pop());
+        numCards--;
+      }
+      this.drawPile = this.discardPile; // put cards back into draw pile
+      this.discardPile = []; // empty discard pile
+      this.shuffleCards(this.drawPile); // shuffle draw pile
+    }
     for (let i = 0; i < numCards; i++) {
       drawnCards.push(this.drawPile.pop());
     }
     return drawnCards;
+  }
+  discard(cards) {
+    for (let i = 0; i < cards.length; i++) {
+      this.discardPile.push(cards[i]);
+    }
   }
   toString() {
     return this.cards.join(", ");
