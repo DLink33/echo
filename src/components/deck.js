@@ -85,15 +85,6 @@ class Deck {
   toString() {
     return this.drawPile.join(", ");
   }
-  copy() {
-    const newDeck = new Deck({});
-    for (let key in this) {
-      if (this.hasOwnProperty(key)) {
-        newDeck[key] = this[key];
-      }
-    }
-    return newDeck;
-  }
 }
 
 module.exports = Deck;
