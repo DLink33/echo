@@ -74,7 +74,7 @@ class Deck {
     } else {
       this.transferCards(this.drawPile, hand, this.drawPile.length);
       this.shuffleCards(this.discardPile);
-      this.transferCards(this.discardPile, hand, this.discardedPile.length);
+      this.transferCards(this.discardPile, hand, this.discardPile.length);
       return;
     }
   }

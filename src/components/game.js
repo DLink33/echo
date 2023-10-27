@@ -9,16 +9,22 @@ class Game {
     this.handSize = handSize;
     this.trackScore = trackScore;
     this.currentPlayer = 0;
-    this.direction = true; // true will mean CW, false will mean CCW
+    this.direction = false; // true will mean CW, false will mean CCW
     this.winner = null;
     this.gameOver = false;
-    this.createPlayers(numPlayers);
-    this.dealCards(this.handSize);
     this.initGame();
   }
   createPlayers(numPlayers) {
-    for (let i = 0; i < numPlayers; i++) {
+    // Create all necessary players
+    for (let i = 0; i < this.numPlayers; i++) {
       this.players.push(new Player(i));
+      this.players[i].name = `Player ${i + 1}`;
+    }
+    // Set the adjacent players for each player (i.e. which players are directly to the left and
+    // right of the current player
+    for (let i = 0; i < this.numPlayers; i++) {
+      this.players[i].Player2Left = this.players[(i - 1) % this.numPlayers]; //TODO: FIX THIS
+      this.players[i].Player2Right = this.player[(i + 1) % this.numPlayers];
     }
   }
   dealCards(handSize) {

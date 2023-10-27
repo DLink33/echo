@@ -1,7 +1,7 @@
-Game = require("./game");
+Game = require("./Game");
 
 const Player = class {
-  constructor(name, player2Left, player2Right) {
+  constructor(name, player2Left = undefined, player2Right = undefined) {
     this.name = "";
     this.points = 0;
     this.hand = [];
