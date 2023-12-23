@@ -23,15 +23,14 @@ class Game {
     // Set the adjacent players for each player (i.e. which players are directly to the left and
     // right of the current player
     for (let i = 0; i < this.numPlayers; i++) {
-      this.players[i].Player2Left = this.players[(i - 1) % this.numPlayers]; //TODO: FIX THIS
-      this.players[i].Player2Right = this.player[(i + 1) % this.numPlayers];
+      this.players[i].Player2Left =
+        this.players[(i - 1 + numPlayers) % this.numPlayers];
+      this.players[i].Player2Right = this.players[(i + 1) % this.numPlayers];
     }
   }
   dealCards(handSize) {
-    for (let i = 0; i < handSize; i++) {
-      for (let j = 0; j < this.numPlayers; j++) {
-        this.deck.draw(this.players[j].hand, this.handSize);
-      }
+    for (let j = 0; j < this.numPlayers; j++) {
+      this.deck.draw(this.players[j].hand, this.handSize);
     }
   }
   initGame() {
