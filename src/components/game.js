@@ -35,6 +35,7 @@ class Game {
   }
   initGame() {
     this.createPlayers(this.numPlayers);
+    this.deck.shuffleCards(this.deck.drawPile);
     this.dealCards(this.handSize);
   }
 }

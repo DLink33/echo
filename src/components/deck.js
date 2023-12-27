@@ -24,6 +24,7 @@ class Deck {
         this.drawPile.push(new Card("draw 2", colors[i], "+2"));
       }
     }
+    //Add the wilds
     for (j = 0; j < 4; j++) {
       this.drawPile.push(new Card("wild draw 4", "wild", "+4"));
       this.drawPile.push(new Card("wild", "wild", "~"));
