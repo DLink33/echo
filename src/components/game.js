@@ -1,7 +1,7 @@
-const Deck = require("./Deck");
-const Player = require("./Player");
+import { Deck } from "./deck.js";
+import { Player } from "./player.js";
 
-class Game {
+export class Game {
   constructor(numPlayers = 2, handSize = 7, rounds = 1, trackScore = false) {
     this.deck = new Deck();
     this.players = [];
@@ -39,5 +39,3 @@ class Game {
     this.dealCards(this.handSize);
   }
 }
-
-module.exports = Game;
