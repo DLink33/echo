@@ -1,4 +1,6 @@
-const Card = require("./card");
+import { Actor } from "./actor.js";
+import Card from "./card.js";
+import { drawDeck } from "../display";
 
 var colors = ["red", "yellow", "blue", "green"];
 

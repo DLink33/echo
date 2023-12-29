@@ -1,17 +1,27 @@
 export class Actor {
   constructor(params) {
-    const { x = 0, y = 0, theta = 0, vx = 0, vy = 0, omega = 0 } = params || {};
+    const {
+      x = 0,
+      y = 0,
+      theta = 0,
+      vx = 0,
+      vy = 0,
+      omega = 0,
+      img = undefined,
+    } = params || {};
     this.x = x;
     this.y = y;
     this.theta = theta;
     this.vx = vx;
     this.vy = vy;
     this.omega = omega;
+    this.img = img;
   }
 
   update() {
     this.x += this.vy;
     this.y += this.vx;
+    this.theta += this.omega;
   }
 
   getPosition() {

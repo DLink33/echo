@@ -1,4 +1,7 @@
-export class Player {
+import { Actor } from "./actor.js";
+import { drawPlayer } from "../display.js";
+
+export class Player extends Actor {
   constructor(params) {
     const {
       name = "",
