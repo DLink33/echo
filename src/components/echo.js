@@ -1,0 +1,41 @@
+import { Deck } from "./deck.js";
+import { Player } from "./player.js";
+
+export class Echo {
+  constructor(numPlayers = 2, handSize = 7, rounds = 1, trackScore = false) {
+    this.deck = new Deck();
+    this.players = [];
+    this.numPlayers = numPlayers;
+    this.handSize = handSize;
+    this.trackScore = trackScore;
+    this.currentPlayer = 0;
+    this.direction = false; // true will mean CW, false will mean CCW
+    this.winner = null;
+    this.gameOver = false;
+    this.initGame();
+  }
+  createPlayers(numPlayers) {
+    // Create all necessary players
+    for (let i = 0; i < this.numPlayers; i++) {
+      this.players.push(new Player(i));
+      this.players[i].name = `Player ${i + 1}`;
+    }
+    // Set the adjacent players for each player (i.e. which players are directly to the left and
+    // right of the current player
+    for (let i = 0; i < this.numPlayers; i++) {
+      this.players[i].Player2Left =
+        this.players[(i - 1 + numPlayers) % this.numPlayers];
+      this.players[i].Player2Right = this.players[(i + 1) % this.numPlayers];
+    }
+  }
+  dealCards(handSize) {
+    for (let j = 0; j < this.numPlayers; j++) {
+      this.deck.draw(this.players[j].hand, this.handSize);
+    }
+  }
+  initGame() {
+    this.createPlayers(this.numPlayers);
+    this.deck.shuffleCards(this.deck.drawPile);
+    this.dealCards(this.handSize);
+  }
+}

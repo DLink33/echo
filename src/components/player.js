@@ -1,12 +1,18 @@
-Game = require("./Game");
+import { Actor } from "./actor.js";
+import { drawPlayer } from "../display.js";
 
-const Player = class {
-  constructor(name, player2Left = undefined, player2Right = undefined) {
-    this.name = "";
+export class Player extends Actor {
+  constructor(params) {
+    const {
+      name = "",
+      player2Left = undefined,
+      player2Right = undefined,
+      isUser = false,
+    } = params || {};
+    this.isUser = isUser;
+    this.name = name;
     this.points = 0;
     this.hand = [];
     this.adjacentPlayers = (player2Left, player2Right);
   }
-};
-
-module.exports = Player;
+}

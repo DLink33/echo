@@ -1,4 +1,6 @@
-const Card = require("./Card");
+import { Actor } from "./actor.js";
+import Card from "./card.js";
+import { drawDeck } from "../display";
 
 var colors = ["red", "yellow", "blue", "green"];
 
@@ -24,6 +26,7 @@ class Deck {
         this.drawPile.push(new Card("draw 2", colors[i], "+2"));
       }
     }
+    //Add the wilds
     for (j = 0; j < 4; j++) {
       this.drawPile.push(new Card("wild draw 4", "wild", "+4"));
       this.drawPile.push(new Card("wild", "wild", "~"));

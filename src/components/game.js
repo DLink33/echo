@@ -1,42 +1,40 @@
-const Deck = require("./Deck");
-const Player = require("./Player");
+import { clearCanvas, getCanvasCtx } from "../display.js";
+import { Echo } from "./echo.js";
 
-class Game {
-  constructor(numPlayers = 2, handSize = 7, rounds = 1, trackScore = false) {
-    this.deck = new Deck();
-    this.players = [];
-    this.numPlayers = numPlayers;
-    this.handSize = handSize;
-    this.trackScore = trackScore;
-    this.currentPlayer = 0;
-    this.direction = false; // true will mean CW, false will mean CCW
-    this.winner = null;
-    this.gameOver = false;
-    this.initGame();
+export class Game {
+  constructor() {
+    this.isRunning = false;
+    this.isPaused = false;
+    this.actors = [];
+    this.echo = new Echo(); //create a new game of Echo
   }
-  createPlayers(numPlayers) {
-    // Create all necessary players
-    for (let i = 0; i < this.numPlayers; i++) {
-      this.players.push(new Player(i));
-      this.players[i].name = `Player ${i + 1}`;
-    }
-    // Set the adjacent players for each player (i.e. which players are directly to the left and
-    // right of the current player
-    for (let i = 0; i < this.numPlayers; i++) {
-      this.players[i].Player2Left =
-        this.players[(i - 1 + numPlayers) % this.numPlayers];
-      this.players[i].Player2Right = this.players[(i + 1) % this.numPlayers];
+
+  //TODO: Work on creating all of the following functions for displaying and updating the UI for the game.
+  run() {
+    this.isRunning = true;
+    this.loop();
+  }
+
+  update() {
+    if (this.isPaused) {
+      return;
     }
   }
-  dealCards(handSize) {
-    for (let j = 0; j < this.numPlayers; j++) {
-      this.deck.draw(this.players[j].hand, this.handSize);
-    }
+
+  draw() {
+    clearCanvas();
+    const ctx = getCanvasCtx();
+    ctx.save();
+    for (let i = 0; i < this.actors.length; i++) {}
+    ctx.restore();
   }
-  initGame() {
-    this.createPlayers(this.numPlayers);
-    this.dealCards(this.handSize);
+  integrate() {
+    this.draw();
+    this.update();
+  }
+  loop() {
+    setInterval(() => {
+      this.integrate();
+    }, 1000 / 60); // This will run the game at 60fps
   }
 }
-
-module.exports = Game;
