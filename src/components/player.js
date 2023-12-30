@@ -9,6 +9,7 @@ export class Player extends Actor {
       player2Right = undefined,
       isUser = false,
     } = params || {};
+    super();
     this.isUser = isUser;
     this.name = name;
     this.points = 0;

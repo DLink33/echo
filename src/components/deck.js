@@ -6,6 +6,7 @@ var colors = ["red", "yellow", "blue", "green"];
 
 export class Deck extends Actor {
   constructor() {
+    super();
     this.drawPile = [];
     this.discardPile = [];
     this.createDeck();

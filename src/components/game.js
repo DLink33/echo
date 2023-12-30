@@ -38,7 +38,8 @@ export class Game {
     this.update();
   }
   loop() {
-    setInterval(() => { // setInterval is a built-in function that will run a function every x milliseconds
+    setInterval(() => {
+      // setInterval is a built-in function that will run a function every x milliseconds
       this.integrate();
     }, 1000 / 60); // This will run the game at 60fps
   }

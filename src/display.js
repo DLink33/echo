@@ -1,19 +1,35 @@
+var COLORS = ["red", "blue", "green", "yellow"];
+var NAMES = [
+  "0",
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "draw2",
+  "skip",
+  "reverse",
+];
+
 export async function loadSpriteBoard(spriteBoardImgPath, numRows, numCols) {
   return new Promise((resolve, reject) => {
     const spriteBoard = new Image();
     spriteBoard.onload = () => {
       const spriteBoard = new Image();
-      let colors = ["red", "blue", "green", "yellow"];
       let spriteMap = {};
       spriteBoard.src = spriteBoardImgPath;
       let rows = numRows;
       let cols = numCols;
       let spriteWidth = spriteBoard.width / cols;
-      let spriteHeight = 100;
+      let spriteHeight = spriteBoard.height / rows;
       let n = 0;
       for (let i = 0; i < rows; i++) {
-        for (let j = 0; j < cols; i++) {
-          let name = `${colors[i]}${j}`;
+        for (let j = 0; j < cols; j++) {
+          let name = `${COLORS[i]}${NAMES[j]}`;
           let x = j * spriteWidth;
           let y = i * spriteHeight;
           spriteMap[name + "_" + n] = {
@@ -26,7 +42,12 @@ export async function loadSpriteBoard(spriteBoardImgPath, numRows, numCols) {
           n++;
         }
       }
+      resolve(spriteMap);
     };
+    spriteBoard.onerror = (error) => {
+      reject(error);
+    };
+    spriteBoard.src = spriteBoardImgPath;
   });
 }
 
