@@ -26,7 +26,6 @@ export async function loadSpriteBoard(spriteBoardImgPath, numRows, numCols) {
           n++;
         }
       }
-      return resolve(spriteMap);
     };
   });
 }

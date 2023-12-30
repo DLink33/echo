@@ -1,6 +1,6 @@
 import { Actor } from "./actor.js";
-import Card from "./card.js";
-import { drawDeck } from "../display";
+import { Card } from "./card.js";
+import { drawDeck } from "../display.js";
 
 var colors = ["red", "yellow", "blue", "green"];
 

@@ -3,6 +3,7 @@ import { drawCard } from "../display.js";
 
 export class Card extends Actor {
   constructor(type, color, symbol) {
+    super();
     this.type = type;
     this.color = color;
     this.symbol = symbol;
