@@ -15,4 +15,10 @@ export class Player extends Actor {
     this.hand = [];
     this.adjacentPlayers = (player2Left, player2Right);
   }
+  draw() {
+    drawPlayer(this);
+  }
+  update() {
+    //TODO
+  }
 }

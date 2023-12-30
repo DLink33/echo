@@ -6,11 +6,15 @@ export class Card extends Actor {
     this.type = type;
     this.color = color;
     this.symbol = symbol;
+    this.faceUp = false;
+  }
+  flip() {
+    this.faceUp = !this.faceUp;
   }
   toString() {
     return `${this.color} ${this.symbol}`;
   }
-  draw(ctx) {
-    drawCard(this, ctx);
+  draw() {
+    drawCard(this);
   }
 }

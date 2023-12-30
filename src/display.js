@@ -1,24 +1,35 @@
-//Load Sprite Board
-const spriteBoard = new Image();
-let colors = ["red", "blue", "green", "yellow"];
-let spriteMap = {};
-spriteBoard.src = "./assets/echo-cards-test.png";
-
-//When Sprite Board is loaded, create sprite mapping
-SpriteBoard.onload = () => {
-  let rows = 5;
-  let cols = 13;
-  let spriteWidth = 71;
-  let spriteHeight = 100;
-  for (let i = 0; i < rows; i++) {
-    for (let j = 0; j < cols; i++) {
-      let name = `${i}${j}`;
-      let x = j * spriteWidth;
-      let y = i * spriteHeight;
-      spriteMap[name] = { x, y };
-    }
-  }
-};
+export async function loadSpriteBoard(spriteBoardImgPath, numRows, numCols) {
+  return new Promise((resolve, reject) => {
+    const spriteBoard = new Image();
+    spriteBoard.onload = () => {
+      const spriteBoard = new Image();
+      let colors = ["red", "blue", "green", "yellow"];
+      let spriteMap = {};
+      spriteBoard.src = spriteBoardImgPath;
+      let rows = numRows;
+      let cols = numCols;
+      let spriteWidth = spriteBoard.width / cols;
+      let spriteHeight = 100;
+      let n = 0;
+      for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; i++) {
+          let name = `${colors[i]}${j}`;
+          let x = j * spriteWidth;
+          let y = i * spriteHeight;
+          spriteMap[name + "_" + n] = {
+            spriteBoard,
+            x,
+            y,
+            spriteWidth,
+            spriteHeight,
+          };
+          n++;
+        }
+      }
+      return resolve(spriteMap);
+    };
+  });
+}
 
 export const getCanvasCtx = () => {
   const canvas = document.getElementById("display");
@@ -28,6 +39,7 @@ export const getCanvasCtx = () => {
 
 export function drawCard(Card) {
   const ctx = getCanvasCtx();
+  ctx.drawImage();
 }
 
 export function drawPlayer(Player) {
@@ -38,11 +50,7 @@ export function drawDeck(Deck) {
   const ctx = getCanvasCtx();
 }
 
-export function drawPile() {
-  const ctx = getCanvasCtx();
-}
-
-export function clearCanvas(width, height) {
+export function clearCanvas(width = 500, height = 500) {
   const ctx = getCanvasCtx();
   ctx.clearRect(0, 0, width, height);
 }
