@@ -1,11 +1,11 @@
-import { Game } from "./components/game.js";
+import { Game } from "./components/Game.js";
 import { loadSpriteBoard } from "./display.js";
 
-var cardSpriteBoardImgPath = "./assets/echo-cards-test.png";
+var cardSpriteBoardImgPath = "src/assets/echo-cards-test.png";
 
 console.log("Loading Sprite Board...");
 try {
-  const spriteMap = await loadSpriteBoard(cardSpriteBoardImgPath, 4, 13);
+  const spriteMap = await loadSpriteBoard(cardSpriteBoardImgPath, 5, 13);
   console.log("Sprite Board:");
   console.log(spriteMap);
 } catch (error) {
