@@ -14,5 +14,6 @@ console.log("Sprite Board Loaded");
 
 console.log("Game Start...");
 const game = new Game();
+game.echo.deck.drawPile[0].faceUp = false;
 window.game = game; // for debugging
 game.run();

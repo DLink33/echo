@@ -1,4 +1,5 @@
 import { degToRads } from "./utils.js";
+import { easingFunctions } from "./utils.js";
 
 var CARD_COLORS = ["red", "blue", "green", "yellow"];
 var SPECIAL_CARD_NAMES = ["back1", "back2", "wild", "wild4"];
@@ -46,8 +47,8 @@ export async function loadSpriteBoard(spriteBoardImgPath, numRows, numCols) {
       }
 
       // Adds the rest of the sprites to the map
-      for (let i = 1; i < numRows; i++) {
-        for (let j = 5; j < numCols; j++) {
+      for (let i = 0; i < numRows; i++) {
+        for (let j = 0; j < numCols; j++) {
           let name = `${CARD_COLORS[i - 1]}${CARD_NAMES[j]}`;
           let x = j * spriteWidth;
           let y = i * spriteHeight;
@@ -81,26 +82,33 @@ export function drawCard(Card) {
   let key;
   if (Card.faceUp) {
     //TODO: Need to get the correct sprite based on the card's color and symbol when it's face up
-    key = `${Card.color}${Card.symbol}`;
+    if (SPECIAL_CARD_NAMES.includes(Card.type)) {
+      key = `${Card.type}`;
+    } else {
+      key = `${Card.color}${Card.symbol}`;
+    }
   } else {
     key = "back1";
     //key = "back2";
-    let sprite = SPRITE_MAP[key];
-    ctx.rotate(degToRads(Card.theta));
-    ctx.translate(Card.x, Card.y);
-    ctx.drawImage(
-      sprite.spriteBoard,
-      sprite.x,
-      sprite.y,
-      sprite.spriteWidth,
-      sprite.spriteHeight,
-      Card.x,
-      Card.y,
-      sprite.spriteWidth,
-      sprite.spriteHeight
-    );
-    ctx.setTransform(1, 0, 0, 1, 0, 0); //reset the transform matrix
   }
+  let sprite = SPRITE_MAP[key];
+  ctx.translate(
+    Card.x + sprite.spriteWidth / 2,
+    Card.y + sprite.spriteHeight / 2
+  );
+  ctx.rotate(degToRads(Card.theta));
+  ctx.drawImage(
+    sprite.spriteBoard,
+    sprite.x,
+    sprite.y,
+    sprite.spriteWidth,
+    sprite.spriteHeight,
+    -sprite.spriteWidth / 2,
+    -sprite.spriteHeight / 2,
+    sprite.spriteWidth,
+    sprite.spriteHeight
+  );
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
 }
 
 export function drawPlayer(Player) {
@@ -116,7 +124,6 @@ export function clearCanvas(width = 500, height = 500) {
   ctx.clearRect(0, 0, width, height);
 }
 
-export function drawSprite(name, x, y) {
+export function moveCard(Card, x, y, theta, interpolation, duration) {
   const ctx = getCanvasCtx();
-  ctx.drawImage(images.name, x, y);
 }
