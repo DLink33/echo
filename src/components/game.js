@@ -28,7 +28,6 @@ export class Game {
     const ctx = getCanvasCtx();
     ctx.save();
     for (const currentActor of this.actors) {
-      //TODO: Uncomment this when the draw methods for the actors are implemented
       currentActor.draw();
     }
     ctx.restore();
@@ -45,7 +44,7 @@ export class Game {
   // TODO: Add a method to add actors to the game based on the Cards in the Echo game
   initActors(echoGame) {
     this.actors.push(echoGame.deck.drawPile[0]); // just push one card for now
-    // this.actors.push(echoGame.deck);
+    // this.actors.push(...echoGame.deck);
     // for (let i = 0; i < echoGame.players.length; i++) {
     //   const currentPlayer = echoGame.players[i];
     //   this.actors.push(currentPlayer);

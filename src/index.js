@@ -5,9 +5,8 @@ var cardSpriteBoardImgPath = "src/assets/echo-cards-test.png";
 
 console.log("Loading Sprite Board...");
 try {
-  const SPRITE_MAP = await loadSpriteBoard(cardSpriteBoardImgPath, 5, 13);
+  await loadSpriteBoard(cardSpriteBoardImgPath, 5, 13);
   console.log("Sprite Board:");
-  console.log(SPRITE_MAP);
 } catch (error) {
   console.log(error);
 }
@@ -15,5 +14,5 @@ console.log("Sprite Board Loaded");
 
 console.log("Game Start...");
 const game = new Game();
-window.game = game;
+window.game = game; // for debugging
 game.run();

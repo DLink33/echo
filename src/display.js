@@ -1,10 +1,8 @@
+import { degToRads } from "./utils.js";
+
 var CARD_COLORS = ["red", "blue", "green", "yellow"];
+var SPECIAL_CARD_NAMES = ["back1", "back2", "wild", "wild4"];
 var CARD_NAMES = [
-  "back1",
-  "back2",
-  "blank",
-  "wild",
-  "wild4",
   "0",
   "1",
   "2",
@@ -23,19 +21,19 @@ var CARD_NAMES = [
 var SPRITE_MAP;
 
 export async function loadSpriteBoard(spriteBoardImgPath, numRows, numCols) {
-  return new Promise((resolve, reject) => {
-    const spriteBoard = new Image();
-    spriteBoard.onload = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
       const spriteBoard = new Image();
-      let spriteMap = {};
       spriteBoard.src = spriteBoardImgPath;
-      let rows = numRows;
-      let cols = numCols;
-      let spriteWidth = spriteBoard.width / cols;
-      let spriteHeight = spriteBoard.height / rows;
-      //adds the first row of special sprites to the map
+      await spriteBoard.decode(); // Wait for the image to be fully loaded
+
+      let spriteMap = {};
+      let spriteWidth = spriteBoard.width / numCols;
+      let spriteHeight = spriteBoard.height / numRows;
+
+      // Adds the first row of special sprites to the map
       for (let k = 0; k < 5; k++) {
-        let name = `${CARD_NAMES[k]}`;
+        let name = `${SPECIAL_CARD_NAMES[k]}`;
         let x = k * spriteWidth;
         let y = 0;
         spriteMap[name] = {
@@ -46,9 +44,10 @@ export async function loadSpriteBoard(spriteBoardImgPath, numRows, numCols) {
           spriteHeight,
         };
       }
-      //adds the rest of the sprites to the map
-      for (let i = 1; i < rows; i++) {
-        for (let j = 0; j < cols; j++) {
+
+      // Adds the rest of the sprites to the map
+      for (let i = 1; i < numRows; i++) {
+        for (let j = 5; j < numCols; j++) {
           let name = `${CARD_COLORS[i - 1]}${CARD_NAMES[j]}`;
           let x = j * spriteWidth;
           let y = i * spriteHeight;
@@ -61,13 +60,13 @@ export async function loadSpriteBoard(spriteBoardImgPath, numRows, numCols) {
           };
         }
       }
+
       SPRITE_MAP = spriteMap;
-      resolve(spriteMap);
-    };
-    spriteBoard.onerror = (error) => {
+      console.log(SPRITE_MAP);
+      resolve();
+    } catch (error) {
       reject(error);
-    };
-    spriteBoard.src = spriteBoardImgPath;
+    }
   });
 }
 
@@ -81,23 +80,26 @@ export function drawCard(Card) {
   const ctx = getCanvasCtx();
   let key;
   if (Card.faceUp) {
-    //SPRITE_MAP;
-    ctx.drawImage();
+    //TODO: Need to get the correct sprite based on the card's color and symbol when it's face up
+    key = `${Card.color}${Card.symbol}`;
   } else {
     key = "back1";
-    //key = 'back2';
-    let val = SPRITE_MAP[key];
+    //key = "back2";
+    let sprite = SPRITE_MAP[key];
+    ctx.rotate(degToRads(Card.theta));
+    ctx.translate(Card.x, Card.y);
     ctx.drawImage(
-      val.spriteBoard,
-      val.x,
-      val.y,
-      val.spriteWidth,
-      val.spriteHeight,
+      sprite.spriteBoard,
+      sprite.x,
+      sprite.y,
+      sprite.spriteWidth,
+      sprite.spriteHeight,
       Card.x,
       Card.y,
-      val.spriteWidth,
-      val.spriteHeight
+      sprite.spriteWidth,
+      sprite.spriteHeight
     );
+    ctx.setTransform(1, 0, 0, 1, 0, 0); //reset the transform matrix
   }
 }
 
