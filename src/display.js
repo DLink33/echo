@@ -1,24 +1,75 @@
-//Load Sprite Board
-const spriteBoard = new Image();
-let colors = ["red", "blue", "green", "yellow"];
-let spriteMap = {};
-spriteBoard.src = "./assets/echo-cards-test.png";
+var CARD_COLORS = ["red", "blue", "green", "yellow"];
+var CARD_NAMES = [
+  "back1",
+  "back2",
+  "blank",
+  "wild",
+  "wild4",
+  "0",
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "draw2",
+  "skip",
+  "reverse",
+];
 
-//When Sprite Board is loaded, create sprite mapping
-SpriteBoard.onload = () => {
-  let rows = 5;
-  let cols = 13;
-  let spriteWidth = 71;
-  let spriteHeight = 100;
-  for (let i = 0; i < rows; i++) {
-    for (let j = 0; j < cols; i++) {
-      let name = `${i}${j}`;
-      let x = j * spriteWidth;
-      let y = i * spriteHeight;
-      spriteMap[name] = { x, y };
-    }
-  }
-};
+var SPRITE_MAP;
+
+export async function loadSpriteBoard(spriteBoardImgPath, numRows, numCols) {
+  return new Promise((resolve, reject) => {
+    const spriteBoard = new Image();
+    spriteBoard.onload = () => {
+      const spriteBoard = new Image();
+      let spriteMap = {};
+      spriteBoard.src = spriteBoardImgPath;
+      let rows = numRows;
+      let cols = numCols;
+      let spriteWidth = spriteBoard.width / cols;
+      let spriteHeight = spriteBoard.height / rows;
+      //adds the first row of special sprites to the map
+      for (let k = 0; k < 5; k++) {
+        let name = `${CARD_NAMES[k]}`;
+        let x = k * spriteWidth;
+        let y = 0;
+        spriteMap[name] = {
+          spriteBoard,
+          x,
+          y,
+          spriteWidth,
+          spriteHeight,
+        };
+      }
+      //adds the rest of the sprites to the map
+      for (let i = 1; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+          let name = `${CARD_COLORS[i - 1]}${CARD_NAMES[j]}`;
+          let x = j * spriteWidth;
+          let y = i * spriteHeight;
+          spriteMap[name] = {
+            spriteBoard,
+            x,
+            y,
+            spriteWidth,
+            spriteHeight,
+          };
+        }
+      }
+      SPRITE_MAP = spriteMap;
+      resolve(spriteMap);
+    };
+    spriteBoard.onerror = (error) => {
+      reject(error);
+    };
+    spriteBoard.src = spriteBoardImgPath;
+  });
+}
 
 export const getCanvasCtx = () => {
   const canvas = document.getElementById("display");
@@ -28,6 +79,26 @@ export const getCanvasCtx = () => {
 
 export function drawCard(Card) {
   const ctx = getCanvasCtx();
+  let key;
+  if (Card.faceUp) {
+    //SPRITE_MAP;
+    ctx.drawImage();
+  } else {
+    key = "back1";
+    //key = 'back2';
+    let val = SPRITE_MAP[key];
+    ctx.drawImage(
+      val.spriteBoard,
+      val.x,
+      val.y,
+      val.spriteWidth,
+      val.spriteHeight,
+      Card.x,
+      Card.y,
+      val.spriteWidth,
+      val.spriteHeight
+    );
+  }
 }
 
 export function drawPlayer(Player) {
@@ -38,11 +109,7 @@ export function drawDeck(Deck) {
   const ctx = getCanvasCtx();
 }
 
-export function drawPile() {
-  const ctx = getCanvasCtx();
-}
-
-export function clearCanvas(width, height) {
+export function clearCanvas(width = 500, height = 500) {
   const ctx = getCanvasCtx();
   ctx.clearRect(0, 0, width, height);
 }

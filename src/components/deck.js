@@ -1,11 +1,12 @@
 import { Actor } from "./actor.js";
-import Card from "./card.js";
-import { drawDeck } from "../display";
+import { Card } from "./card.js";
+import { drawDeck } from "../display.js";
 
 var colors = ["red", "yellow", "blue", "green"];
 
-class Deck {
+export class Deck extends Actor {
   constructor() {
+    super();
     this.drawPile = [];
     this.discardPile = [];
     this.createDeck();
@@ -20,15 +21,16 @@ class Deck {
         this.drawPile.push(new Card("number", colors[i], j.toString()));
         this.drawPile.push(new Card("number", colors[i], j.toString()));
       }
+      // Add the special cards
       for (j = 1; j <= 2; j++) {
         this.drawPile.push(new Card("reverse", colors[i], "<->"));
         this.drawPile.push(new Card("skip", colors[i], "X"));
-        this.drawPile.push(new Card("draw 2", colors[i], "+2"));
+        this.drawPile.push(new Card("draw2", colors[i], "+2"));
       }
     }
-    //Add the wilds
+    // Add the wilds
     for (j = 0; j < 4; j++) {
-      this.drawPile.push(new Card("wild draw 4", "wild", "+4"));
+      this.drawPile.push(new Card("wild4", "wild", "+4"));
       this.drawPile.push(new Card("wild", "wild", "~"));
     }
   }
@@ -56,7 +58,7 @@ class Deck {
     }
     return;
   }
-  draw(hand, numCards = 1) {
+  drawCards(hand, numCards = 1) {
     let totalDrawableCards = this.discardPile.length + this.drawPile.length;
     if (totalDrawableCards >= numCards) {
       if (this.drawPile.length >= numCards) {
@@ -81,13 +83,19 @@ class Deck {
       return;
     }
   }
-  discard(hand, numCards = 1) {
+  discardCards(hand, numCards = 1) {
     this.transferCards(hand, this.discardPile, numCards);
     return;
   }
+
+  draw() {
+    drawDeck(this);
+  }
+
+  //TODO
+  update() {}
+
   toString() {
     return this.drawPile.join(", ");
   }
 }
-
-module.exports = Deck;

@@ -9,10 +9,17 @@ export class Player extends Actor {
       player2Right = undefined,
       isUser = false,
     } = params || {};
+    super();
     this.isUser = isUser;
     this.name = name;
     this.points = 0;
     this.hand = [];
     this.adjacentPlayers = (player2Left, player2Right);
+  }
+  draw() {
+    drawPlayer(this);
+  }
+  update() {
+    //TODO
   }
 }

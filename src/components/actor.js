@@ -17,30 +17,25 @@ export class Actor {
     this.omega = omega;
     this.img = img;
   }
-
-  update() {
-    this.x += this.vy;
-    this.y += this.vx;
-    this.theta += this.omega;
-  }
-
   getPosition() {
     return [this.x, this.y, this.theta];
   }
-
   getVelocity() {
     return [this.vx, this.vy, this.omega];
   }
-
   setPosition(x, y, theta) {
     this.x = x;
     this.y = y;
     this.theta = theta;
   }
-
   setVelocity(vx, vy, omega) {
     this.vx = vx;
     this.vy = vy;
     this.omega = omega;
+  }
+  update() {
+    this.x += this.vy;
+    this.y += this.vx;
+    this.theta += this.omega;
   }
 }
