@@ -20,6 +20,8 @@ var CARD_NAMES = [
   "reverse",
 ];
 
+var SPRITE_MAP;
+
 export async function loadSpriteBoard(spriteBoardImgPath, numRows, numCols) {
   return new Promise((resolve, reject) => {
     const spriteBoard = new Image();
@@ -31,37 +33,35 @@ export async function loadSpriteBoard(spriteBoardImgPath, numRows, numCols) {
       let cols = numCols;
       let spriteWidth = spriteBoard.width / cols;
       let spriteHeight = spriteBoard.height / rows;
-      let n = 0;
       //adds the first row of special sprites to the map
       for (let k = 0; k < 5; k++) {
         let name = `${CARD_NAMES[k]}`;
         let x = k * spriteWidth;
         let y = 0;
-        spriteMap[name + "_" + n] = {
+        spriteMap[name] = {
           spriteBoard,
           x,
           y,
           spriteWidth,
           spriteHeight,
         };
-        n++;
       }
       //adds the rest of the sprites to the map
       for (let i = 1; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
-          let name = `${CARD_COLORS[i]}${CARD_NAMES[j]}`;
+          let name = `${CARD_COLORS[i - 1]}${CARD_NAMES[j]}`;
           let x = j * spriteWidth;
           let y = i * spriteHeight;
-          spriteMap[name + "_" + n] = {
+          spriteMap[name] = {
             spriteBoard,
             x,
             y,
             spriteWidth,
             spriteHeight,
           };
-          n++;
         }
       }
+      SPRITE_MAP = spriteMap;
       resolve(spriteMap);
     };
     spriteBoard.onerror = (error) => {
@@ -79,8 +79,26 @@ export const getCanvasCtx = () => {
 
 export function drawCard(Card) {
   const ctx = getCanvasCtx();
-  //TODO: I need to get this function to have access to the Sprite Map in order to be able to draw a specific card.  I also need a way to associate an instance of a Card object with its sprite on the board.
-  ctx.drawImage();
+  let key;
+  if (Card.faceUp) {
+    //SPRITE_MAP;
+    ctx.drawImage();
+  } else {
+    key = "back1";
+    //key = 'back2';
+    let val = SPRITE_MAP[key];
+    ctx.drawImage(
+      val.spriteBoard,
+      val.x,
+      val.y,
+      val.spriteWidth,
+      val.spriteHeight,
+      Card.x,
+      Card.y,
+      val.spriteWidth,
+      val.spriteHeight
+    );
+  }
 }
 
 export function drawPlayer(Player) {

@@ -25,12 +25,12 @@ export class Deck extends Actor {
       for (j = 1; j <= 2; j++) {
         this.drawPile.push(new Card("reverse", colors[i], "<->"));
         this.drawPile.push(new Card("skip", colors[i], "X"));
-        this.drawPile.push(new Card("draw 2", colors[i], "+2"));
+        this.drawPile.push(new Card("draw2", colors[i], "+2"));
       }
     }
     // Add the wilds
     for (j = 0; j < 4; j++) {
-      this.drawPile.push(new Card("wild draw 4", "wild", "+4"));
+      this.drawPile.push(new Card("wild4", "wild", "+4"));
       this.drawPile.push(new Card("wild", "wild", "~"));
     }
   }
