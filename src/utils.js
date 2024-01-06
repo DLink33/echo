@@ -14,7 +14,7 @@ export function randInt(max, min) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-export const easingFunctions = {
+export const interpolationFuncs = {
   linear: (t) => t,
   easeInQuad: (t) => t * t,
   easeOutQuad: (t) => t * (2 - t),

@@ -41,7 +41,6 @@ export class Game {
       this.integrate();
     }, 1000 / 60); // This will run the game at 60fps
   }
-  // TODO: Add a method to add actors to the game based on the Cards in the Echo game
   initActors(echoGame) {
     this.actors.push(echoGame.deck.drawPile[0]); // just push one card for now
     // this.actors.push(...echoGame.deck);

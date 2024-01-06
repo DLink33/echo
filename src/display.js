@@ -1,5 +1,5 @@
 import { degToRads } from "./utils.js";
-import { easingFunctions } from "./utils.js";
+import { interpolationFuncs } from "./utils.js";
 
 var CARD_COLORS = ["red", "blue", "green", "yellow"];
 var SPECIAL_CARD_NAMES = ["back1", "back2", "wild", "wild4"];
@@ -63,7 +63,7 @@ export async function loadSpriteBoard(spriteBoardImgPath, numRows, numCols) {
       }
 
       SPRITE_MAP = spriteMap;
-      console.log(SPRITE_MAP);
+      //console.log(SPRITE_MAP); // for debugging
       resolve();
     } catch (error) {
       reject(error);
@@ -81,7 +81,6 @@ export function drawCard(Card) {
   const ctx = getCanvasCtx();
   let key;
   if (Card.faceUp) {
-    //TODO: Need to get the correct sprite based on the card's color and symbol when it's face up
     if (SPECIAL_CARD_NAMES.includes(Card.type)) {
       key = `${Card.type}`;
     } else {
@@ -89,7 +88,7 @@ export function drawCard(Card) {
     }
   } else {
     key = "back1";
-    //key = "back2";
+    //key = "back2"; // if a alternate back design is desired
   }
   let sprite = SPRITE_MAP[key];
   ctx.translate(
@@ -124,6 +123,8 @@ export function clearCanvas(width = 500, height = 500) {
   ctx.clearRect(0, 0, width, height);
 }
 
-export function moveCard(Card, x, y, theta, interpolation, duration) {
+export function moveCard(Card, x, y, theta, interpolationMethod, duration) {
   const ctx = getCanvasCtx();
+  //TODO: I want to move the card from its current position to the new position base on a given duration and easing function
+  // - Once I finish this, I would like to work on updating the sprite sheet to include all of the numbers and colors, and special cards
 }
