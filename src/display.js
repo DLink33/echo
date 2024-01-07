@@ -95,7 +95,7 @@ export function drawCard(Card) {
     Card.pos.x + sprite.spriteWidth / 2,
     Card.pos.y + sprite.spriteHeight / 2
   );
-  ctx.rotate(degToRads(Card.theta));
+  ctx.rotate(degToRads(Card.pos.theta));
   ctx.drawImage(
     sprite.spriteBoard,
     sprite.x,

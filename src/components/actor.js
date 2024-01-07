@@ -34,7 +34,7 @@ export class Actor {
     this.moveStruct.startTime = performance.now();
     this.moveStruct.startPos = this.getPosition();
     this.moveStruct.destination = { x: dest.x, y: dest.y, theta: dest.theta };
-    this.moveStruct.duration = dur / 1000;
+    this.moveStruct.duration = dur;
     this.moveStruct.interpolMethod = interpol;
   }
   resetMove() {
@@ -48,9 +48,6 @@ export class Actor {
     if (this.moveStruct.destination) {
       const elapsedTime =
         (performance.now() - this.moveStruct.startTime) / 1000;
-
-      //TODO: There is an issue with the var 'progress' and how it is being calculated with the interpolation function.  I think I am mistake with how this should work.
-
       let progress = elapsedTime / this.moveStruct.duration;
       if (progress >= 1) {
         this.setPosition(this.moveStruct.destination);

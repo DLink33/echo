@@ -31,9 +31,9 @@ export const interpolationFuncs = {
   easeOutQuint: (f) => 1 + --f * f * f * f * f,
   easeInOutQuint: (f) =>
     f < 0.5 ? 16 * f * f * f * f * f : 1 + 16 * --f * f * f * f * f,
-  easeInExpo: (f) => (f === 0 ? 0 : Math.pow(2, 10 * (f - 1))),
-  easeOutExpo: (f) => (f === 1 ? 1 : 1 - Math.pow(2, -10 * f)),
-  easeInOutExpo: (f) =>
+  easeInExp: (f) => (f === 0 ? 0 : Math.pow(2, 10 * (f - 1))),
+  easeOutExp: (f) => (f === 1 ? 1 : 1 - Math.pow(2, -10 * f)),
+  easeInOutExp: (f) =>
     f === 0
       ? 0
       : f === 1
