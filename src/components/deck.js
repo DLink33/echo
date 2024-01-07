@@ -30,8 +30,8 @@ export class Deck extends Actor {
     }
     // Add the wilds
     for (j = 0; j < 4; j++) {
-      this.drawPile.push(new Card("wild4", "wild", "+4"));
-      this.drawPile.push(new Card("wild", "wild", "~"));
+      this.drawPile.push(new Card("wild4", "all", "+4"));
+      this.drawPile.push(new Card("wild", "all", "~"));
     }
   }
   shuffleCards(cards) {

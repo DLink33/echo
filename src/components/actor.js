@@ -1,20 +1,14 @@
 import { interpolationFuncs } from "../utils.js";
 
 export class Actor {
-  constructor(params) {
+  constructor(params = {}) {
     const {
-      x = 0,
-      y = 0,
-      theta = 0,
-      vx = 0,
-      vy = 0,
-      omega = 0,
+      pos = { x: 0, y: 0, theta: 0 },
+      vel = { vx: 0, vy: 0, omega: 0 },
       img = undefined,
-    } = params || {};
-    //TODO: for some reason the pos elements are being init to 'NaN'
-    // need to fix
-    this.pos = { x: x, y: y, theta: theta };
-    this.vel = { vx: vx, vy: vy, omega: omega };
+    } = params;
+    this.pos = pos;
+    this.vel = vel;
     this.img = img;
     this.moveStruct = {
       startPos: null,
@@ -80,9 +74,9 @@ export class Actor {
       }
     } else {
       this.setPosition({
-        x: this.x + this.vx,
-        y: this.y + this.vy,
-        theta: this.theta + this.omega,
+        x: this.pos.x + this.vel.vx,
+        y: this.pos.y + this.vel.vy,
+        theta: this.pos.theta + this.vel.omega,
       });
     }
   }

@@ -6,7 +6,6 @@ var cardSpriteBoardImgPath = "src/assets/echo-cards-test.png";
 console.log("Loading Sprite Board...");
 try {
   await loadSpriteBoard(cardSpriteBoardImgPath, 5, 13);
-  console.log("Sprite Board:");
 } catch (error) {
   console.log(error);
 }

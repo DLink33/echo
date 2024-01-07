@@ -33,7 +33,7 @@ export async function loadSpriteBoard(spriteBoardImgPath, numRows, numCols) {
       let spriteHeight = spriteBoard.height / numRows;
 
       // Adds the first row of special sprites to the map
-      for (let k = 0; k < 5; k++) {
+      for (let k = 0; k < 4; k++) {
         let name = `${SPECIAL_CARD_NAMES[k]}`;
         let x = k * spriteWidth;
         let y = 0;
@@ -47,7 +47,7 @@ export async function loadSpriteBoard(spriteBoardImgPath, numRows, numCols) {
       }
 
       // Adds the rest of the sprites to the map
-      for (let i = 0; i < numRows; i++) {
+      for (let i = 1; i < numRows; i++) {
         for (let j = 0; j < numCols; j++) {
           let name = `${CARD_COLORS[i - 1]}${CARD_NAMES[j]}`;
           let x = j * spriteWidth;
@@ -63,7 +63,7 @@ export async function loadSpriteBoard(spriteBoardImgPath, numRows, numCols) {
       }
 
       SPRITE_MAP = spriteMap;
-      //console.log(SPRITE_MAP); // for debugging
+      console.log(SPRITE_MAP); // for debugging
       resolve();
     } catch (error) {
       reject(error);
@@ -92,8 +92,8 @@ export function drawCard(Card) {
   }
   let sprite = SPRITE_MAP[key];
   ctx.translate(
-    Card.x + sprite.spriteWidth / 2,
-    Card.y + sprite.spriteHeight / 2
+    Card.pos.x + sprite.spriteWidth / 2,
+    Card.pos.y + sprite.spriteHeight / 2
   );
   ctx.rotate(degToRads(Card.theta));
   ctx.drawImage(
@@ -121,14 +121,4 @@ export function drawDeck(Deck) {
 export function clearCanvas(width = 500, height = 500) {
   const ctx = getCanvasCtx();
   ctx.clearRect(0, 0, width, height);
-}
-
-export function moveActor(Actor, destination, interpolMethod, duration) {
-  let [x0, y0, theta0] = Actor.getPosition();
-  let currVel = Actor.getVelocity();
-  let startPos = { x: x0, y: y0, theta: theta0 };
-  let endPos = { x: destination.x, y: destination.y, theta: destination.theta };
-  let startTime = performance.now();
-  let endTime = startTime + duration / 1000; // duration in sec
-  Actor.destination = destination;
 }
