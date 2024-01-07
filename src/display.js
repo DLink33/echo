@@ -123,8 +123,12 @@ export function clearCanvas(width = 500, height = 500) {
   ctx.clearRect(0, 0, width, height);
 }
 
-export function moveCard(Card, x, y, theta, interpolationMethod, duration) {
-  const ctx = getCanvasCtx();
-  //TODO: I want to move the card from its current position to the new position base on a given duration and easing function
-  // - Once I finish this, I would like to work on updating the sprite sheet to include all of the numbers and colors, and special cards
+export function moveActor(Actor, destination, interpolMethod, duration) {
+  let [x0, y0, theta0] = Actor.getPosition();
+  let currVel = Actor.getVelocity();
+  let startPos = { x: x0, y: y0, theta: theta0 };
+  let endPos = { x: destination.x, y: destination.y, theta: destination.theta };
+  let startTime = performance.now();
+  let endTime = startTime + duration / 1000; // duration in sec
+  Actor.destination = destination;
 }

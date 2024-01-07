@@ -1,5 +1,6 @@
 import { clearCanvas, getCanvasCtx } from "../display.js";
 import { Echo } from "./echo.js";
+const FPS = 60;
 
 export class Game {
   constructor() {
@@ -39,7 +40,7 @@ export class Game {
   loop() {
     setInterval(() => {
       this.integrate();
-    }, 1000 / 60); // This will run the game at 60fps
+    }, 1000 / FPS);
   }
   initActors(echoGame) {
     this.actors.push(echoGame.deck.drawPile[0]); // just push one card for now
