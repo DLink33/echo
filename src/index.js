@@ -1,7 +1,7 @@
 import { Game } from "./components/game.js";
 import { loadSpriteBoard } from "./display.js";
 
-var cardSpriteBoardImgPath = "src/assets/echo-cards-test.png";
+var cardSpriteBoardImgPath = "src/assets/echo-cards.png";
 
 console.log("Loading Sprite Board...");
 try {
