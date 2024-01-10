@@ -17,27 +17,87 @@ export class Deck extends Actor {
     // for each color...
     for (let i = 0; i < 4; i++) {
       // Add one zero card
-      this.drawPile.push(new Card("number", colors[i], "0", this.pos));
+      this.drawPile.push(
+        new Card({
+          type: "number",
+          color: colors[i],
+          symbol: "0",
+          pos: this.pos,
+          vel: this.vel,
+        })
+      );
       for (var j = 1; j <= 9; j++) {
         // Add two version of the 1-9
         this.drawPile.push(
-          new Card("number", colors[i], j.toString(), this.pos)
+          new Card({
+            type: "number",
+            color: colors[i],
+            symbol: j.toString(),
+            pos: this.pos,
+            vel: this.vel,
+          })
         );
         this.drawPile.push(
-          new Card("number", colors[i], j.toString(), this.pos)
+          new Card({
+            type: "number",
+            color: colors[i],
+            symbol: j.toString(),
+            pos: this.pos,
+            vel: this.vel,
+          })
         );
       }
       // Add the special cards
       for (j = 1; j <= 2; j++) {
-        this.drawPile.push(new Card("reverse", colors[i], "<->", this.pos));
-        this.drawPile.push(new Card("skip", colors[i], "X", this.pos));
-        this.drawPile.push(new Card("draw2", colors[i], "+2", this.pos));
+        this.drawPile.push(
+          new Card({
+            type: "reverse",
+            color: colors[i],
+            symbol: "<->",
+            pos: this.pos,
+            vel: this.vel,
+          })
+        );
+        this.drawPile.push(
+          new Card({
+            type: "skip",
+            color: colors[i],
+            symbol: "X",
+            pos: this.pos,
+            vel: this.vel,
+          })
+        );
+        this.drawPile.push(
+          new Card({
+            type: "draw2",
+            color: colors[i],
+            symbol: "+2",
+            pos: this.pos,
+            vel: this.vel,
+          })
+        );
       }
     }
     // Add the wilds
     for (j = 0; j < 4; j++) {
-      this.drawPile.push(new Card("wild4", "all", "+4"));
-      this.drawPile.push(new Card("wild", "all", "~"));
+      this.drawPile.push(
+        new Card({
+          type: "wild4",
+          color: "all",
+          symbol: "+4",
+          pos: this.pos,
+          vel: this.vel,
+        })
+      );
+      this.drawPile.push(
+        new Card({
+          type: "wild",
+          color: "all",
+          symbol: "~",
+          pos: this.pos,
+          vel: this.vel,
+        })
+      );
     }
   }
   shuffleCards(cards) {
