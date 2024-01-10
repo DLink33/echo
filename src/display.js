@@ -1,9 +1,8 @@
 import { degToRads } from "./utils.js";
-import { interpolationFuncs } from "./utils.js";
 
 var CARD_COLORS = ["red", "blue", "green", "yellow"];
 var SPECIAL_CARD_NAMES = ["back1", "back2", "wild", "wild4"];
-var CARD_NAMES = [
+var CARD_SYMBOLS = [
   "0",
   "1",
   "2",
@@ -14,9 +13,9 @@ var CARD_NAMES = [
   "7",
   "8",
   "9",
-  "draw2",
-  "skip",
-  "reverse",
+  "+2",
+  "X",
+  "<->",
 ];
 
 var SPRITE_MAP;
@@ -49,7 +48,7 @@ export async function loadSpriteBoard(spriteBoardImgPath, numRows, numCols) {
       // Adds the rest of the sprites to the map
       for (let i = 1; i < numRows; i++) {
         for (let j = 0; j < numCols; j++) {
-          let name = `${CARD_COLORS[i - 1]}${CARD_NAMES[j]}`;
+          let name = `${CARD_COLORS[i - 1]}${CARD_SYMBOLS[j]}`;
           let x = j * spriteWidth;
           let y = i * spriteHeight;
           spriteMap[name] = {
@@ -115,10 +114,53 @@ export function drawPlayer(Player) {
 }
 
 export function drawDeck(Deck) {
-  const ctx = getCanvasCtx();
+  //TODO: The deck's position is being set correctly, but the cards' positions are not being set to the same as the deck's position
+  drawCard(Deck.drawPile[0]);
 }
 
 export function clearCanvas(width = 500, height = 500) {
   const ctx = getCanvasCtx();
   ctx.clearRect(0, 0, width, height);
+}
+
+export class Transform {
+  constructor() {
+    this.start = null;
+    this.current = null;
+    this.dest = null;
+    this.startTime = null;
+    this.duration = null;
+    this.interpolMethod = null;
+  }
+  setMove(start, dest, dur, interpol) {
+    this.startTime = performance.now();
+    this.startPos = this.current = start;
+    this.dest = { x: dest.x, y: dest.y, theta: dest.theta };
+    this.duration = dur;
+    this.interpolMethod = interpol;
+  }
+  updateCurrent() {
+    const elapsedTime = (performance.now() - this.startTime) / 1000;
+    let progress = elapsedTime / this.duration;
+    if (progress >= 1) {
+      this.current = this.dest;
+      this.resetMove();
+    } else {
+      progress = this.interpolMethod(progress);
+      let [x, y, theta] = [
+        this.startPos.x + (this.dest.x - this.startPos.x) * progress,
+        this.startPos.y + (this.dest.y - this.startPos.y) * progress,
+        this.startPos.theta +
+          (this.dest.theta - this.startPos.theta) * progress,
+      ];
+      this.current = { x, y, theta };
+    }
+  }
+  resetMove() {
+    this.start = null;
+    this.dest = null;
+    this.startTime = null;
+    this.duration = null;
+    this.interpolMethod = null;
+  }
 }

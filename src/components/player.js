@@ -19,7 +19,4 @@ export class Player extends Actor {
   draw() {
     drawPlayer(this);
   }
-  update() {
-    //TODO
-  }
 }

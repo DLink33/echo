@@ -5,8 +5,8 @@ import { drawDeck } from "../display.js";
 var colors = ["red", "yellow", "blue", "green"];
 
 export class Deck extends Actor {
-  constructor() {
-    super();
+  constructor(pos) {
+    super(pos);
     this.drawPile = [];
     this.discardPile = [];
     this.createDeck();
@@ -15,17 +15,21 @@ export class Deck extends Actor {
     // for each color...
     for (let i = 0; i < 4; i++) {
       // Add one zero card
-      this.drawPile.push(new Card("number", colors[i], "0"));
+      this.drawPile.push(new Card("number", colors[i], "0", this.pos));
       for (var j = 1; j <= 9; j++) {
         // Add two version of the 1-9
-        this.drawPile.push(new Card("number", colors[i], j.toString()));
-        this.drawPile.push(new Card("number", colors[i], j.toString()));
+        this.drawPile.push(
+          new Card("number", colors[i], j.toString(), this.pos)
+        );
+        this.drawPile.push(
+          new Card("number", colors[i], j.toString(), this.pos)
+        );
       }
       // Add the special cards
       for (j = 1; j <= 2; j++) {
-        this.drawPile.push(new Card("reverse", colors[i], "<->"));
-        this.drawPile.push(new Card("skip", colors[i], "X"));
-        this.drawPile.push(new Card("draw2", colors[i], "+2"));
+        this.drawPile.push(new Card("reverse", colors[i], "<->", this.pos));
+        this.drawPile.push(new Card("skip", colors[i], "X", this.pos));
+        this.drawPile.push(new Card("draw2", colors[i], "+2", this.pos));
       }
     }
     // Add the wilds
