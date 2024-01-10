@@ -5,8 +5,10 @@ import { drawDeck } from "../display.js";
 var colors = ["red", "yellow", "blue", "green"];
 
 export class Deck extends Actor {
-  constructor(pos) {
-    super(pos);
+  constructor(params = {}) {
+    const { pos = { x: 0, y: 0, theta: 0 }, vel = { vx: 0, vy: 0, omega: 0 } } =
+      params || {};
+    super({ pos, vel });
     this.drawPile = [];
     this.discardPile = [];
     this.createDeck();

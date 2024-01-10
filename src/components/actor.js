@@ -3,14 +3,10 @@ import { Transform } from "../display.js";
 
 export class Actor {
   constructor(params = {}) {
-    const {
-      pos = { x: 0, y: 0, theta: 0 },
-      vel = { vx: 0, vy: 0, omega: 0 },
-      img = undefined,
-    } = params;
+    const { pos = { x: 0, y: 0, theta: 0 }, vel = { vx: 0, vy: 0, omega: 0 } } =
+      params || {};
     this.pos = pos;
     this.vel = vel;
-    this.img = img;
     this.transform = new Transform();
   }
   getPosition() {
