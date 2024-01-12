@@ -3,7 +3,7 @@ import { Player } from "./player.js";
 
 export class Echo {
   constructor(numPlayers = 2, handSize = 7, rounds = 1, trackScore = false) {
-    this.deck = new Deck();
+    this.deck = new Deck({ pos: { x: 172, y: 198, theta: 0 } });
     this.players = [];
     this.numPlayers = numPlayers;
     this.handSize = handSize;

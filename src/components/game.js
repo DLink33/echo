@@ -1,5 +1,6 @@
 import { clearCanvas, getCanvasCtx } from "../display.js";
 import { Echo } from "./echo.js";
+const FPS = 60;
 
 export class Game {
   constructor() {
@@ -8,7 +9,7 @@ export class Game {
     this.actors = [];
     this.echo = new Echo(); //create a new game of Echo
     this.initActors(this.echo);
-    console.log(this.actors);
+    //console.log(this.actors); // for debugging
   }
 
   run() {
@@ -28,7 +29,6 @@ export class Game {
     const ctx = getCanvasCtx();
     ctx.save();
     for (const currentActor of this.actors) {
-      //TODO: Uncomment this when the draw methods for the actors are implemented
       currentActor.draw();
     }
     ctx.restore();
@@ -40,12 +40,12 @@ export class Game {
   loop() {
     setInterval(() => {
       this.integrate();
-    }, 1000 / 60); // This will run the game at 60fps
+    }, 1000 / FPS);
   }
-  // TODO: Add a method to add actors to the game based on the Cards in the Echo game
   initActors(echoGame) {
-    this.actors.push(echoGame.deck.drawPile[0]); // just push one card for now
-    // this.actors.push(echoGame.deck);
+    // this.actors.push(echoGame.deck.drawPile[0]); // just push one card for now
+    this.actors.push(echoGame.deck);
+    //this.actors.push(...echoGame.deck.discardPile);
     // for (let i = 0; i < echoGame.players.length; i++) {
     //   const currentPlayer = echoGame.players[i];
     //   this.actors.push(currentPlayer);

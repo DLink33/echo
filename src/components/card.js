@@ -2,8 +2,8 @@ import { Actor } from "./actor.js";
 import { drawCard } from "../display.js";
 
 export class Card extends Actor {
-  constructor(type, color, symbol) {
-    super();
+  constructor(type, color, symbol, pos) {
+    super(pos);
     this.type = type;
     this.color = color;
     this.symbol = symbol;

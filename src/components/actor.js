@@ -1,41 +1,52 @@
+import { interpolationFuncs } from "../utils.js";
+import { Transform } from "../display.js";
+
 export class Actor {
-  constructor(params) {
+  constructor(params = {}) {
     const {
-      x = 0,
-      y = 0,
-      theta = 0,
-      vx = 0,
-      vy = 0,
-      omega = 0,
+      pos = { x: 0, y: 0, theta: 0 },
+      vel = { vx: 0, vy: 0, omega: 0 },
       img = undefined,
-    } = params || {};
-    this.x = x;
-    this.y = y;
-    this.theta = theta;
-    this.vx = vx;
-    this.vy = vy;
-    this.omega = omega;
+    } = params;
+    this.pos = pos;
+    this.vel = vel;
     this.img = img;
+    this.transform = new Transform();
   }
   getPosition() {
-    return [this.x, this.y, this.theta];
+    return this.pos;
   }
   getVelocity() {
-    return [this.vx, this.vy, this.omega];
+    return this.vel;
   }
-  setPosition(x, y, theta) {
-    this.x = x;
-    this.y = y;
-    this.theta = theta;
+  setPosition(pos) {
+    this.pos = { x: pos.x, y: pos.y, theta: pos.theta };
   }
-  setVelocity(vx, vy, omega) {
-    this.vx = vx;
-    this.vy = vy;
-    this.omega = omega;
+  setVelocity(vel) {
+    this.vel = { vx: vel.vx, vy: vel.vy, omega: vel.omega };
   }
   update() {
-    this.x += this.vy;
-    this.y += this.vx;
-    this.theta += this.omega;
+    if (this.transform.dest) {
+      this.transform.updateCurrent();
+      this.setPosition(this.transform.current);
+    } else {
+      this.setPosition({
+        x: this.pos.x + this.vel.vx,
+        y: this.pos.y + this.vel.vy,
+        theta: this.pos.theta + this.vel.omega,
+      });
+    }
+  }
+  moveTo(destination, duration, interpolation) {
+    const interpolMethod = interpolationFuncs[interpolation];
+    if (!interpolMethod) {
+      throw new Error(`Unknown interpolation method: ${interpolation}`);
+    }
+    this.transform.setMove(
+      this.getPosition(),
+      destination,
+      duration,
+      interpolMethod
+    );
   }
 }
