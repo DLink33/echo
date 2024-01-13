@@ -7,9 +7,8 @@ export class Game {
     this.isRunning = false;
     this.isPaused = false;
     this.actors = [];
-    this.echo = new Echo(); //create a new game of Echo
+    this.echo = new Echo({ numPlayers: 1, handSize: 1 }); //create a new game of Echo
     this.initActors(this.echo);
-    //console.log(this.actors); // for debugging
   }
 
   run() {
@@ -43,12 +42,10 @@ export class Game {
     }, 1000 / FPS);
   }
   initActors(echoGame) {
-    // this.actors.push(echoGame.deck.drawPile[0]); // just push one card for now
-    this.actors.push(echoGame.deck);
-    //this.actors.push(...echoGame.deck.discardPile);
-    // for (let i = 0; i < echoGame.players.length; i++) {
-    //   const currentPlayer = echoGame.players[i];
-    //   this.actors.push(currentPlayer);
-    // }
+    this.actors.push(...echoGame.deck.drawPile.slice(0, 5)); // Always draw the first 5 cards of the draw pile on the canvas
+    this.actors.push(...echoGame.deck.discardPile.slice(0, 5)); // Always draw the first 5 cards of the discard pile on the canvas
+    for (const player of echoGame.players) {
+      this.actors.push(...player.hand); // Draw each player's hand on the canvas
+    }
   }
 }

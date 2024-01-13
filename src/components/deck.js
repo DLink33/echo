@@ -1,6 +1,5 @@
 import { Actor } from "./actor.js";
 import { Card } from "./card.js";
-import { drawDeck } from "../display.js";
 
 var colors = ["red", "yellow", "blue", "green"];
 
@@ -9,15 +8,15 @@ export class Deck extends Actor {
     const { pos = { x: 0, y: 0, theta: 0 }, vel = { vx: 0, vy: 0, omega: 0 } } =
       params || {};
     super({ pos, vel });
-    this.drawPile = [];
-    this.discardPile = [];
+    this.drawPile = { cards: [], pos: pos };
+    this.discardPile = { cards: [], pos: pos };
     this.createDeck();
   }
   createDeck() {
     // for each color...
     for (let i = 0; i < 4; i++) {
       // Add one zero card
-      this.drawPile.push(
+      this.drawPile.cards.push(
         new Card({
           type: "number",
           color: colors[i],
@@ -28,7 +27,7 @@ export class Deck extends Actor {
       );
       for (var j = 1; j <= 9; j++) {
         // Add two version of the 1-9
-        this.drawPile.push(
+        this.drawPile.cards.push(
           new Card({
             type: "number",
             color: colors[i],
@@ -37,7 +36,7 @@ export class Deck extends Actor {
             vel: this.vel,
           })
         );
-        this.drawPile.push(
+        this.drawPile.cards.push(
           new Card({
             type: "number",
             color: colors[i],
@@ -49,7 +48,7 @@ export class Deck extends Actor {
       }
       // Add the special cards
       for (j = 1; j <= 2; j++) {
-        this.drawPile.push(
+        this.drawPile.cards.push(
           new Card({
             type: "reverse",
             color: colors[i],
@@ -58,7 +57,7 @@ export class Deck extends Actor {
             vel: this.vel,
           })
         );
-        this.drawPile.push(
+        this.drawPile.cards.push(
           new Card({
             type: "skip",
             color: colors[i],
@@ -67,7 +66,7 @@ export class Deck extends Actor {
             vel: this.vel,
           })
         );
-        this.drawPile.push(
+        this.drawPile.cards.push(
           new Card({
             type: "draw2",
             color: colors[i],
@@ -80,7 +79,7 @@ export class Deck extends Actor {
     }
     // Add the wilds
     for (j = 0; j < 4; j++) {
-      this.drawPile.push(
+      this.drawPile.cards.push(
         new Card({
           type: "wild4",
           color: "all",
@@ -89,7 +88,7 @@ export class Deck extends Actor {
           vel: this.vel,
         })
       );
-      this.drawPile.push(
+      this.drawPile.cards.push(
         new Card({
           type: "wild",
           color: "all",
@@ -104,14 +103,14 @@ export class Deck extends Actor {
     let size = cards.length;
     for (let i = size - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [this.drawPile[i], this.drawPile[j]] = [
-        this.drawPile[j],
-        this.drawPile[i],
+      [this.drawPile.cards[i], this.drawPile.cards[j]] = [
+        this.drawPile.cards[j],
+        this.drawPile.cards[i],
       ];
     }
   }
   resetDeck() {
-    this.drawPile = [];
+    this.drawPile.cards = [];
     this.createDeck();
   }
   transferCards(src, dest, numCards) {
@@ -120,7 +119,10 @@ export class Deck extends Actor {
       return;
     }
     for (let i = 0; i < numCards; i++) {
-      dest.push(src.pop());
+      let card = src.cards.pop();
+      dest.cards.push(card);
+      //TODO: Add animation here for when the card is moved
+      card.moveTo(dest.pos, 5, "easeOutCubic");
     }
     return;
   }
@@ -131,7 +133,7 @@ export class Deck extends Actor {
         this.transferCards(this.drawPile, hand, numCards);
         return;
       } else {
-        let remainingCards = numCards - this.drawPile.length;
+        let numRemainingCards = numCards - this.drawPile.length;
         this.transferCards(this.drawPile, hand, this.drawPile.length);
         this.transferCards(
           this.discardPile,
@@ -139,7 +141,7 @@ export class Deck extends Actor {
           this.discardPile.length
         );
         this.shuffleCards(this.drawPile);
-        this.transferCards(this.drawPile, hand, remainingCards);
+        this.transferCards(this.drawPile, hand, numRemainingCards);
         return;
       }
     } else {
@@ -153,13 +155,6 @@ export class Deck extends Actor {
     this.transferCards(hand, this.discardPile, numCards);
     return;
   }
-
-  draw() {
-    drawDeck(this);
-  }
-
-  //TODO
-  update() {}
 
   toString() {
     return this.drawPile.join(", ");

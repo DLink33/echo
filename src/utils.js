@@ -14,6 +14,22 @@ export function randInt(max, min) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
+export function getCanvasSize() {
+  const canvas = document.getElementById("display");
+  if (canvas) {
+    return { width: canvas.width, height: canvas.height };
+  } else {
+    console.error("Canvas element not found");
+    return { width: 0, height: 0 };
+  }
+}
+
+export let CANVAS_SIZE;
+
+window.addEventListener("load", () => {
+  CANVAS_SIZE = getCanvasSize();
+});
+
 export const interpolationFuncs = {
   linear: (f) => f,
   easeInQuad: (f) => f * f,

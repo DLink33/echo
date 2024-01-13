@@ -22,9 +22,11 @@ export class Actor {
     this.vel = { vx: vel.vx, vy: vel.vy, omega: vel.omega };
   }
   update() {
+    // if the actor has a destination, then update the current position
     if (this.transform.dest) {
       this.transform.updateCurrent();
       this.setPosition(this.transform.current);
+      // if the actor has no destination, then update the position based on the velocity
     } else {
       this.setPosition({
         x: this.pos.x + this.vel.vx,

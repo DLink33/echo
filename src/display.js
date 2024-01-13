@@ -113,11 +113,6 @@ export function drawPlayer(Player) {
   const ctx = getCanvasCtx();
 }
 
-export function drawDeck(Deck) {
-  //TODO: The deck's position is being set correctly, but the cards' positions are not being set to the same as the deck's position
-  drawCard(Deck.drawPile[0]);
-}
-
 export function clearCanvas(width = 500, height = 500) {
   const ctx = getCanvasCtx();
   ctx.clearRect(0, 0, width, height);
