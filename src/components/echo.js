@@ -25,7 +25,7 @@ export class Echo {
     // Calculate the position of each player's hand
     const calcPlayerPos = (playerNum) => {
       let canvasWidth = getCanvasDimensions().width;
-      let canvasHeight;
+      let canvasHeight = getCanvasDimensions().height;
       let cardWidth = 71;
       let cardHeight = 100;
       let x = 0;
@@ -87,6 +87,12 @@ export class Echo {
   initGame() {
     this.createPlayers(this.numPlayers);
     this.deck.shuffleCards(this.deck.drawPile);
+    console.log(
+      `Player 1 hand before deal: ${JSON.stringify(this.players[0].hand)}`
+    );
     this.dealCards(this.handSize);
+    console.log(
+      `Player 1 hand after deal: ${JSON.stringify(this.players[0].hand)}`
+    );
   }
 }

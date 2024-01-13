@@ -119,35 +119,38 @@ export class Deck extends Actor {
       return;
     }
     for (let i = 0; i < numCards; i++) {
+      console.log(`Transferring ${src.cards[src.cards.length - 1]} to ${dest}`);
+      console.log(`Source: ${src.pos}, Destination: ${dest.pos}`);
       let card = src.cards.pop();
       dest.cards.push(card);
       //TODO: Add animation here for when the card is moved
-      //card.moveTo(dest.pos, 5, "easeOutCubic");
+      card.moveTo(dest.pos, 1.25, 'easeOutCubic');
     }
     return;
   }
   drawCards(hand, numCards = 1) {
-    let totalDrawableCards = this.discardPile.length + this.drawPile.length;
+    let totalDrawableCards =
+      this.discardPile.cards.length + this.drawPile.cards.length;
     if (totalDrawableCards >= numCards) {
-      if (this.drawPile.length >= numCards) {
+      if (this.drawPile.cards.length >= numCards) {
         this.transferCards(this.drawPile, hand, numCards);
         return;
       } else {
-        let numRemainingCards = numCards - this.drawPile.length;
-        this.transferCards(this.drawPile, hand, this.drawPile.length);
+        let numRemainingCards = numCards - this.drawPile.cards.length;
+        this.transferCards(this.drawPile, hand, this.drawPile.cards.length);
         this.transferCards(
           this.discardPile,
           this.drawPile,
-          this.discardPile.length
+          this.discardPile.cards.length
         );
         this.shuffleCards(this.drawPile);
         this.transferCards(this.drawPile, hand, numRemainingCards);
         return;
       }
     } else {
-      this.transferCards(this.drawPile, hand, this.drawPile.length);
+      this.transferCards(this.drawPile, hand, this.drawPile.cards.length);
       this.shuffleCards(this.discardPile);
-      this.transferCards(this.discardPile, hand, this.discardPile.length);
+      this.transferCards(this.discardPile, hand, this.discardPile.cards.length);
       return;
     }
   }

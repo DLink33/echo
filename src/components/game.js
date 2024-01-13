@@ -7,10 +7,10 @@ export class Game {
     this.isRunning = false;
     this.isPaused = false;
     this.actors = [];
-    this.echo = new Echo({ numPlayers: 1, handSize: 1 }); //create a new game of Echo
-    console.log(this.echo.drawPile);
+    this.echo = new Echo({ numPlayers: 4, handSize: 1 }); //create a new game of Echo
     this.initActors();
     this.echo.initGame();
+    console.log(this.echo.deck.drawPile.cards);
   }
 
   run() {
