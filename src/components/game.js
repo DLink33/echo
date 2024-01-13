@@ -1,5 +1,5 @@
-import { clearCanvas, getCanvasCtx } from "../display.js";
-import { Echo } from "./echo.js";
+import { clearCanvas, getCanvasCtx } from '../display.js';
+import { Echo } from './echo.js';
 const FPS = 60;
 
 export class Game {
@@ -8,7 +8,9 @@ export class Game {
     this.isPaused = false;
     this.actors = [];
     this.echo = new Echo({ numPlayers: 1, handSize: 1 }); //create a new game of Echo
-    this.initActors(this.echo);
+    console.log(this.echo.drawPile);
+    this.initActors();
+    this.echo.initGame();
   }
 
   run() {
@@ -41,11 +43,9 @@ export class Game {
       this.integrate();
     }, 1000 / FPS);
   }
-  initActors(echoGame) {
-    this.actors.push(...echoGame.deck.drawPile.slice(0, 5)); // Always draw the first 5 cards of the draw pile on the canvas
-    this.actors.push(...echoGame.deck.discardPile.slice(0, 5)); // Always draw the first 5 cards of the discard pile on the canvas
-    for (const player of echoGame.players) {
-      this.actors.push(...player.hand); // Draw each player's hand on the canvas
+  initActors() {
+    for (const card of this.echo.deck.drawPile.cards) {
+      this.actors.push(card);
     }
   }
 }

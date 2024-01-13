@@ -1,6 +1,6 @@
-import { Deck } from "./deck.js";
-import { Player } from "./player.js";
-import { CANVAS_SIZE } from "../utils.js";
+import { Deck } from './deck.js';
+import { Player } from './player.js';
+import { getCanvasDimensions } from '../utils.js';
 
 export class Echo {
   constructor(params = {}) {
@@ -20,13 +20,12 @@ export class Echo {
     this.direction = false; // true will mean CW, false will mean CCW
     this.winner = null;
     this.gameOver = false;
-    this.initGame();
   }
   createPlayers(numPlayers) {
     // Calculate the position of each player's hand
     const calcPlayerPos = (playerNum) => {
-      let canvasWidth = CANVAS_SIZE.width;
-      let canvasHeight = CANVAS_SIZE.height;
+      let canvasWidth = getCanvasDimensions().width;
+      let canvasHeight;
       let cardWidth = 71;
       let cardHeight = 100;
       let x = 0;
@@ -68,7 +67,6 @@ export class Echo {
         name: `Player ${i + 1}`,
         pos: pos1,
       });
-      console.log(`current player pos: ${currentPlayer.pos}`);
       this.players.push(currentPlayer);
     }
     // Set the adjacent players for each player (i.e. which players are directly to the left and
@@ -81,7 +79,7 @@ export class Echo {
     // Set the first player as the user
     this.players[0].isUser = true;
   }
-  dealCards(handSize) {
+  dealCards() {
     for (let j = 0; j < this.numPlayers; j++) {
       this.deck.drawCards(this.players[j].hand, this.handSize);
     }

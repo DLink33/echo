@@ -1,19 +1,18 @@
-import { Game } from "./components/game.js";
-import { loadSpriteBoard } from "./display.js";
+import { Game } from './components/game.js';
+import { loadSpriteBoard } from './display.js';
 
-var cardSpriteBoardImgPath = "src/assets/echo-cards.png";
+var cardSpriteBoardImgPath = 'src/assets/echo-cards.png';
 
-console.log("Loading Sprite Board...");
+console.log('Loading Sprite Board...');
 try {
   await loadSpriteBoard(cardSpriteBoardImgPath, 5, 13);
 } catch (error) {
   console.log(error);
 }
-console.log("Sprite Board Loaded");
+console.log('Sprite Board Loaded');
 
-console.log("Game Start...");
+console.log('Game Start...');
 const game = new Game();
 window.game = game; // for debugging
-game.echo.deck.drawPile[0].flip();
 game.run();
-console.log("Game End");
+console.log('Game End');

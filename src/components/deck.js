@@ -1,7 +1,7 @@
-import { Actor } from "./actor.js";
-import { Card } from "./card.js";
+import { Actor } from './actor.js';
+import { Card } from './card.js';
 
-var colors = ["red", "yellow", "blue", "green"];
+var colors = ['red', 'yellow', 'blue', 'green'];
 
 export class Deck extends Actor {
   constructor(params = {}) {
@@ -18,9 +18,9 @@ export class Deck extends Actor {
       // Add one zero card
       this.drawPile.cards.push(
         new Card({
-          type: "number",
+          type: 'number',
           color: colors[i],
-          symbol: "0",
+          symbol: '0',
           pos: this.pos,
           vel: this.vel,
         })
@@ -29,7 +29,7 @@ export class Deck extends Actor {
         // Add two version of the 1-9
         this.drawPile.cards.push(
           new Card({
-            type: "number",
+            type: 'number',
             color: colors[i],
             symbol: j.toString(),
             pos: this.pos,
@@ -38,7 +38,7 @@ export class Deck extends Actor {
         );
         this.drawPile.cards.push(
           new Card({
-            type: "number",
+            type: 'number',
             color: colors[i],
             symbol: j.toString(),
             pos: this.pos,
@@ -50,27 +50,27 @@ export class Deck extends Actor {
       for (j = 1; j <= 2; j++) {
         this.drawPile.cards.push(
           new Card({
-            type: "reverse",
+            type: 'reverse',
             color: colors[i],
-            symbol: "<->",
+            symbol: '<->',
             pos: this.pos,
             vel: this.vel,
           })
         );
         this.drawPile.cards.push(
           new Card({
-            type: "skip",
+            type: 'skip',
             color: colors[i],
-            symbol: "X",
+            symbol: 'X',
             pos: this.pos,
             vel: this.vel,
           })
         );
         this.drawPile.cards.push(
           new Card({
-            type: "draw2",
+            type: 'draw2',
             color: colors[i],
-            symbol: "+2",
+            symbol: '+2',
             pos: this.pos,
             vel: this.vel,
           })
@@ -81,18 +81,18 @@ export class Deck extends Actor {
     for (j = 0; j < 4; j++) {
       this.drawPile.cards.push(
         new Card({
-          type: "wild4",
-          color: "all",
-          symbol: "+4",
+          type: 'wild4',
+          color: 'all',
+          symbol: '+4',
           pos: this.pos,
           vel: this.vel,
         })
       );
       this.drawPile.cards.push(
         new Card({
-          type: "wild",
-          color: "all",
-          symbol: "~",
+          type: 'wild',
+          color: 'all',
+          symbol: '~',
           pos: this.pos,
           vel: this.vel,
         })
@@ -115,14 +115,14 @@ export class Deck extends Actor {
   }
   transferCards(src, dest, numCards) {
     if (src.length < numCards) {
-      console.log("Not enough cards in source to transfer to destination.");
+      console.log('Not enough cards in source to transfer to destination.');
       return;
     }
     for (let i = 0; i < numCards; i++) {
       let card = src.cards.pop();
       dest.cards.push(card);
       //TODO: Add animation here for when the card is moved
-      card.moveTo(dest.pos, 5, "easeOutCubic");
+      //card.moveTo(dest.pos, 5, "easeOutCubic");
     }
     return;
   }
@@ -157,6 +157,6 @@ export class Deck extends Actor {
   }
 
   toString() {
-    return this.drawPile.join(", ");
+    return this.drawPile.join(', ');
   }
 }

@@ -15,20 +15,18 @@ export function randInt(max, min) {
 }
 
 export function getCanvasSize() {
-  const canvas = document.getElementById("display");
+  const canvas = document.getElementById('display');
   if (canvas) {
     return { width: canvas.width, height: canvas.height };
   } else {
-    console.error("Canvas element not found");
+    console.error('Canvas element not found');
     return { width: 0, height: 0 };
   }
 }
 
-export let CANVAS_SIZE;
-
-window.addEventListener("load", () => {
-  CANVAS_SIZE = getCanvasSize();
-});
+export function getCanvasDimensions() {
+  return getCanvasSize();
+}
 
 export const interpolationFuncs = {
   linear: (f) => f,
@@ -53,10 +51,10 @@ export const interpolationFuncs = {
     f === 0
       ? 0
       : f === 1
-      ? 1
-      : f < 0.5
-      ? Math.pow(2, 10 * (2 * f - 1)) / 2
-      : (2 - Math.pow(2, -10 * (2 * f - 1))) / 2,
+        ? 1
+        : f < 0.5
+          ? Math.pow(2, 10 * (2 * f - 1)) / 2
+          : (2 - Math.pow(2, -10 * (2 * f - 1))) / 2,
   easeInSin: (f) => 1 + Math.sin((Math.PI / 2) * f - Math.PI / 2),
   easeOutSin: (f) => Math.sin((Math.PI / 2) * f),
   easeInOutSin: (f) => (1 + Math.sin(Math.PI * f - Math.PI / 2)) / 2,
