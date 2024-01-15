@@ -114,19 +114,20 @@ export class Deck extends Actor {
     this.createDeck();
   }
   transferCards(src, dest, numCards) {
-    if (src.length < numCards) {
-      console.log('Not enough cards in source to transfer to destination.');
-      return;
+    try {
+      if (src.length < numCards) {
+        throw new Error(
+          'Not enough cards in source to transfer to destination.'
+        );
+      }
+      for (let i = 0; i < numCards; i++) {
+        let card = src.cards.pop();
+        dest.cards.push(card);
+        card.moveTo(dest.pos, 0.75, 'easeOutCubic');
+      }
+    } catch (error) {
+      console.error(error);
     }
-    for (let i = 0; i < numCards; i++) {
-      console.log(`Transferring ${src.cards[src.cards.length - 1]} to ${dest}`);
-      console.log(`Source: ${src.pos}, Destination: ${dest.pos}`);
-      let card = src.cards.pop();
-      dest.cards.push(card);
-      //TODO: Add animation here for when the card is moved
-      card.moveTo(dest.pos, 1.25, 'easeOutCubic');
-    }
-    return;
   }
   drawCards(hand, numCards = 1) {
     let totalDrawableCards =

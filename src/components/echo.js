@@ -2,6 +2,9 @@ import { Deck } from './deck.js';
 import { Player } from './player.js';
 import { getCanvasDimensions } from '../utils.js';
 
+let DECK_SPACING = 10;
+let CARD_WIDTH = 71;
+//let CARD_HEIGHT = 100;
 export class Echo {
   constructor(params = {}) {
     const {
@@ -10,7 +13,15 @@ export class Echo {
       rounds = 1,
       trackScore = false,
     } = params || {};
-    this.deck = new Deck({ pos: { x: 172, y: 198, theta: 0 } });
+    this.deck = new Deck({
+      pos: {
+        x: Math.ceil(
+          (getCanvasDimensions().width - CARD_WIDTH - DECK_SPACING) / 2
+        ),
+        y: getCanvasDimensions().height / 2,
+        theta: 0,
+      },
+    });
     this.players = [];
     this.numPlayers = numPlayers;
     this.handSize = handSize;
@@ -26,30 +37,30 @@ export class Echo {
     const calcPlayerPos = (playerNum) => {
       let canvasWidth = getCanvasDimensions().width;
       let canvasHeight = getCanvasDimensions().height;
-      let cardWidth = 71;
+      //let cardWidth = 71;
       let cardHeight = 100;
       let x = 0;
       let y = 0;
       let theta = 0;
       switch (playerNum) {
         case 0:
-          x = (canvasWidth - cardWidth) / 2;
-          y = canvasHeight - cardHeight;
+          x = canvasWidth / 2;
+          y = canvasHeight - cardHeight / 2;
           theta = 0;
           break;
         case 1:
-          x = canvasWidth - cardHeight;
-          y = (canvasHeight - cardWidth) / 2;
+          x = canvasWidth - cardHeight / 2;
+          y = canvasHeight / 2;
           theta = -90;
           break;
         case 2:
-          x = (canvasWidth - cardWidth) / 2;
-          y = cardHeight;
+          x = canvasWidth / 2;
+          y = cardHeight / 2;
           theta = 180;
           break;
         case 3:
-          x = cardHeight;
-          y = (canvasHeight - cardWidth) / 2;
+          x = cardHeight / 2;
+          y = canvasHeight / 2;
           theta = 90;
           break;
         default:
@@ -85,14 +96,14 @@ export class Echo {
     }
   }
   initGame() {
-    this.createPlayers(this.numPlayers);
-    this.deck.shuffleCards(this.deck.drawPile);
-    console.log(
-      `Player 1 hand before deal: ${JSON.stringify(this.players[0].hand)}`
-    );
-    this.dealCards(this.handSize);
-    console.log(
-      `Player 1 hand after deal: ${JSON.stringify(this.players[0].hand)}`
-    );
+    // NOTE: The drawPile cards are randomized, but they are being drawn on the canvas in the order that they were added to the actor array
+    //SOLUTION: Need to add cards to the actor array in the same order that they are added to the drawPile array
+
+    //TODO: Need to create methods for properly displaying (moving) cards in player's hand as they are being dealt
+
+    //TODO: Need to make sure that the users hand is displayed properly (different from non-user hands)
+
+    //this.dealCards(this.handSize);
   }
+  
 }

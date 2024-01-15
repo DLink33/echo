@@ -96,10 +96,8 @@ export function drawCard(Card) {
     //key = "back2"; // if a alternate back design is desired
   }
   let sprite = SPRITE_MAP[key];
-  ctx.translate(
-    Card.pos.x + sprite.spriteWidth / 2,
-    Card.pos.y + sprite.spriteHeight / 2
-  );
+  ctx.save();
+  ctx.translate(Card.pos.x, Card.pos.y);
   ctx.rotate(degToRads(Card.pos.theta));
   ctx.drawImage(
     sprite.spriteBoard,
@@ -112,7 +110,7 @@ export function drawCard(Card) {
     sprite.spriteWidth,
     sprite.spriteHeight
   );
-  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.restore();
 }
 
 export function clearCanvas(width = 500, height = 500) {

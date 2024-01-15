@@ -18,4 +18,33 @@ export class Player extends Actor {
     this.hand = { cards: [], pos: pos };
     this.adjacentPlayers = [player2Left, player2Right];
   }
+  calculateCardPositions() {
+    let pos = this.hand.pos;
+    let numCards = this.hand.cards.length;
+    let cardPositions = [];
+
+    if (pos.theta === 0 || pos.theta === 90) {
+      
+    } else {
+
+    }
+    
+  }
+  update() {
+    // if the actor has a destination, then update the current position
+    if (this.transform.dest) {
+      this.transform.updateCurrent();
+      this.setPosition(this.transform.current);
+      // if the actor has no destination, then update the position based on the velocity
+    } else {
+      this.setPosition({
+        x: this.pos.x + this.vel.vx,
+        y: this.pos.y + this.vel.vy,
+        theta: this.pos.theta + this.vel.omega,
+      });
+    }
+  }
+  toString() {
+    return `${this.name}: ${this.hand.cards} `;
+  }
 }
