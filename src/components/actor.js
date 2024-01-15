@@ -1,5 +1,5 @@
-import { interpolationFuncs } from "../utils.js";
-import { Transform } from "../display.js";
+import { interpolationFuncs } from '../utils.js';
+import { Transform } from '../display.js';
 
 export class Actor {
   constructor(params = {}) {

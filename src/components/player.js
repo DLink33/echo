@@ -15,33 +15,37 @@ export class Player extends Actor {
     this.isUser = isUser;
     this.name = name;
     this.points = points;
-    this.hand = { cards: [], pos: pos };
+    this.hand = { cards: [], pos: pos, parent: this };
     this.adjacentPlayers = [player2Left, player2Right];
   }
   calculateCardPositions() {
-    let pos = this.hand.pos;
+    let handPos = this.hand.pos;
     let numCards = this.hand.cards.length;
+    let cards = this.hand.cards;
     let cardPositions = [];
-
-    if (pos.theta === 0 || pos.theta === 90) {
-      
+    let spacing = 22;
+    let cardWidth = 71;
+    let handWidth = cardWidth + (numCards - 1) * spacing;
+    let currCardPos;
+    if (handPos.theta === 0 || handPos.theta === 90) {
+      for (let i = 0; i < numCards; i++) {
+        currCardPos = cards[i].getPosition();
+        currCardPos.x = handPos.x - ((1 / 2) * handWidth + i * spacing);
+        cardPositions.push(currCardPos);
+      }
     } else {
-
+      for (let i = 0; i < numCards; i++) {
+        currCardPos = cards[i].getPosition();
+        currCardPos.y = handPos.y - ((1 / 2) * handWidth + i * spacing);
+        cardPositions.push(currCardPos);
+      }
     }
-    
+    return cardPositions;
   }
-  update() {
-    // if the actor has a destination, then update the current position
-    if (this.transform.dest) {
-      this.transform.updateCurrent();
-      this.setPosition(this.transform.current);
-      // if the actor has no destination, then update the position based on the velocity
-    } else {
-      this.setPosition({
-        x: this.pos.x + this.vel.vx,
-        y: this.pos.y + this.vel.vy,
-        theta: this.pos.theta + this.vel.omega,
-      });
+  adjustCardPositions() {
+    let cardPositions = this.calculateCardPositions();
+    for (const card of this.hand.cards) {
+      card.moveTo(cardPositions.shift(), 0.5, 'linear'); //sh
     }
   }
   toString() {

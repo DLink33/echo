@@ -9,15 +9,7 @@ export class Game {
     this.isPaused = false;
     this.echo = new Echo({ numPlayers: 1, handSize: 2 }); //create a new game of Echo
     this.actors = [];
-    this.echo.createPlayers(this.echo.numPlayers);
-    this.echo.deck.shuffleCards(this.echo.deck.drawPile.cards);
-    this.initActors();
-    //TODO: Need to make sure that the deck is dealing from the top most card.
-    console.log(`First Card in Deck:${this.echo.deck.drawPile.cards[0]}`); // DEBUG: First card in drawPile
-    console.log(
-      `Last Card in Deck:${this.echo.deck.drawPile.cards[this.echo.deck.drawPile.cards.length - 1]}`
-    ); // DEBUG: Last card in drawPile
-    this.echo.dealCards();
+    this.initGame();
   }
 
   run() {
@@ -49,6 +41,12 @@ export class Game {
     setInterval(() => {
       this.integrate();
     }, 1000 / FPS);
+  }
+  initGame() {
+    this.echo.createPlayers(this.echo.numPlayers);
+    this.echo.deck.shuffleCards(this.echo.deck.drawPile.cards);
+    this.initActors();
+    this.echo.dealCards();
   }
   initActors() {
     for (const card of this.echo.deck.drawPile.cards) {
