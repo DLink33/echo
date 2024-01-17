@@ -7,7 +7,7 @@ export class Game {
   constructor() {
     this.isRunning = false;
     this.isPaused = false;
-    this.echo = new Echo({ numPlayers: 1, handSize: 2 }); //create a new game of Echo
+    this.echo = new Echo({ numPlayers: 1, handSize: 3 }); //create a new game of Echo
     this.actors = [];
     this.initGame();
   }

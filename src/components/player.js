@@ -45,7 +45,7 @@ export class Player extends Actor {
   adjustCardPositions() {
     let cardPositions = this.calculateCardPositions();
     for (const card of this.hand.cards) {
-      card.moveTo(cardPositions.shift(), 0.5, 'linear'); //sh
+      card.moveTo(cardPositions.shift(), 0.5, 'linear');
     }
   }
   toString() {

@@ -124,6 +124,7 @@ export class Deck extends Actor {
         let card = src.cards.pop();
         dest.cards.push(card);
         card.moveTo(dest.pos, 0.75, 'easeOutCubic');
+        dest.parent.adjustCardPositions();
       }
     } catch (error) {
       console.error(error);

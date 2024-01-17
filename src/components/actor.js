@@ -10,10 +10,10 @@ export class Actor {
     this.transform = new Transform();
   }
   getPosition() {
-    return this.pos;
+    return { ...this.pos };
   }
   getVelocity() {
-    return this.vel;
+    return { ...this.vel };
   }
   setPosition(pos) {
     this.pos = { x: pos.x, y: pos.y, theta: pos.theta };
