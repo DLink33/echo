@@ -1,6 +1,7 @@
 import { Deck } from './deck.js';
 import { Player } from './player.js';
 import { getCanvasDimensions } from '../utils.js';
+import { delay } from '../utils.js';
 
 let DECK_SPACING = 10;
 let CARD_WIDTH = 71;
@@ -90,9 +91,10 @@ export class Echo {
     // Set the first player as the user
     this.players[0].isUser = true;
   }
-  dealCards() {
+  async dealCards() {
     for (let j = 0; j < this.numPlayers; j++) {
-      this.deck.drawCards(this.players[j].hand, this.handSize);
+      await this.deck.drawCards(this.players[j].hand, this.handSize);
+      //this.players[j].adjustCardPositions();
     }
   }
 }

@@ -27,7 +27,7 @@ export class Player extends Actor {
     let cardWidth = 71;
     let handWidth = cardWidth + (numCards - 1) * spacing;
     let currCardPos;
-    if (handPos.theta === 0 || handPos.theta === 90) {
+    if (handPos.theta === 0 || handPos.theta === 180) {
       for (let i = 0; i < numCards; i++) {
         currCardPos = cards[i].getPosition();
         currCardPos.x = handPos.x - ((1 / 2) * handWidth + i * spacing);
@@ -45,7 +45,7 @@ export class Player extends Actor {
   adjustCardPositions() {
     let cardPositions = this.calculateCardPositions();
     for (const card of this.hand.cards) {
-      card.moveTo(cardPositions.shift(), 0.5, 'linear');
+      card.moveTo(cardPositions.shift(), 0.5, 'easeOutQuad');
     }
   }
   toString() {
