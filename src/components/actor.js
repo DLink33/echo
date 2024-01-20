@@ -1,5 +1,6 @@
 import { interpolationFuncs } from '../utils.js';
 import { Transform } from '../display.js';
+import { delay } from '../utils.js';
 
 export class Actor {
   constructor(params = {}) {
@@ -35,7 +36,7 @@ export class Actor {
       });
     }
   }
-  moveTo(destination, duration, interpolation) {
+  async moveTo(destination, duration, interpolation, async = false) {
     const interpolMethod = interpolationFuncs[interpolation];
     if (!interpolMethod) {
       throw new Error(`Unknown interpolation method: ${interpolation}`);
@@ -46,5 +47,8 @@ export class Actor {
       duration,
       interpolMethod
     );
+    if (async) {
+      await delay(duration);
+    }
   }
 }

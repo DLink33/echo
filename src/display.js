@@ -136,7 +136,7 @@ export class Transform {
     this.interpolMethod = interpol;
   }
   updateCurrent() {
-    const elapsedTime = (performance.now() - this.startTime) / 1000;
+    const elapsedTime = performance.now() - this.startTime;
     let progress = elapsedTime / this.duration;
     if (progress >= 1) {
       this.current = this.dest;

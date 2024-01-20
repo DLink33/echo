@@ -28,9 +28,8 @@ export function getCanvasDimensions() {
   return getCanvasSize();
 }
 
-export function delay(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
+export const delay = async (ms) =>
+  new Promise((resolve) => setTimeout(resolve, ms));
 
 export const interpolationFuncs = {
   linear: (f) => f,

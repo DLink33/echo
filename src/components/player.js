@@ -42,10 +42,10 @@ export class Player extends Actor {
     }
     return cardPositions;
   }
-  adjustCardPositions() {
+  async adjustCardPositions() {
     let cardPositions = this.calculateCardPositions();
     for (const card of this.hand.cards) {
-      card.moveTo(cardPositions.shift(), 0.5, 'easeOutQuad');
+      card.moveTo(cardPositions.shift(), 333, 'easeOutQuad');
     }
   }
   toString() {
