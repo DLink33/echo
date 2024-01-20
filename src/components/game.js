@@ -7,7 +7,7 @@ export class Game {
   constructor() {
     this.isRunning = false;
     this.isPaused = false;
-    this.echo = new Echo({ numPlayers: 2, handSize: 3 }); //create a new game of Echo
+    this.echo = new Echo({ numPlayers: 2, handSize: 5 }); //create a new game of Echo
     this.actors = [];
     this.initGame();
   }
@@ -46,7 +46,9 @@ export class Game {
     this.echo.createPlayers(this.echo.numPlayers);
     this.echo.deck.shuffleCards(this.echo.deck.drawPile.cards);
     this.initActors();
-    this.echo.dealCards();
+    this.echo.numPlayers > 2
+      ? this.echo.roundRobinDeal()
+      : this.echo.batchDeal();
   }
   initActors() {
     for (const card of this.echo.deck.drawPile.cards) {

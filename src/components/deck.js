@@ -1,6 +1,5 @@
 import { Actor } from './actor.js';
 import { Card } from './card.js';
-import { delay } from '../utils.js';
 
 var colors = ['red', 'yellow', 'blue', 'green'];
 

@@ -90,9 +90,16 @@ export class Echo {
     // Set the first player as the user
     this.players[0].isUser = true;
   }
-  async dealCards() {
+  async batchDeal() {
     for (let j = 0; j < this.numPlayers; j++) {
       await this.deck.drawCards(this.players[j].hand, this.handSize);
+    }
+  }
+  async roundRobinDeal() {
+    for (let i = 0; i < this.handSize; i++) {
+      for (const player of this.players) {
+        await this.deck.drawCards(player.hand, 1);
+      }
     }
   }
 }
