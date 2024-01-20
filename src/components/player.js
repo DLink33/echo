@@ -30,13 +30,15 @@ export class Player extends Actor {
     if (handPos.theta === 0 || handPos.theta === 180) {
       for (let i = 0; i < numCards; i++) {
         currCardPos = cards[i].getPosition();
-        currCardPos.x = handPos.x - ((1 / 2) * handWidth + i * spacing);
+        currCardPos.x =
+          handPos.x + ((1 / 2) * (cardWidth - handWidth) + i * spacing);
         cardPositions.push(currCardPos);
       }
     } else {
       for (let i = 0; i < numCards; i++) {
         currCardPos = cards[i].getPosition();
-        currCardPos.y = handPos.y - ((1 / 2) * handWidth + i * spacing);
+        currCardPos.y =
+          handPos.y + ((1 / 2) * (cardWidth - handWidth) + i * spacing);
         cardPositions.push(currCardPos);
       }
     }
@@ -45,7 +47,14 @@ export class Player extends Actor {
   async adjustCardPositions() {
     let cardPositions = this.calculateCardPositions();
     for (const card of this.hand.cards) {
-      card.moveTo(cardPositions.shift(), 333, 'easeOutQuad');
+      card.moveTo(cardPositions.shift(), 333, 'easeInOutExp');
+      if (this.isUser) {
+        for (const card of this.hand.cards) {
+          if (!card.faceUp) {
+            card.flip();
+          }
+        }
+      }
     }
   }
   toString() {

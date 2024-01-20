@@ -10,8 +10,8 @@ export function randFloat(max, min) {
   return Math.random() * (max - min + 1) + min;
 }
 
-export function randInt(max, min) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
+export function randInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 export function getCanvasSize() {

@@ -1,13 +1,14 @@
 import { clearCanvas, getCanvasCtx } from '../display.js';
 import { Echo } from './echo.js';
+import { randInt } from '../utils.js';
 
-const FPS = 60;
+const FPS = 120;
 
 export class Game {
   constructor() {
     this.isRunning = false;
     this.isPaused = false;
-    this.echo = new Echo({ numPlayers: 2, handSize: 5 }); //create a new game of Echo
+    this.echo = new Echo({ numPlayers: 4, handSize: 5 }); //create a new game of Echo
     this.actors = [];
     this.initGame();
   }
@@ -46,9 +47,11 @@ export class Game {
     this.echo.createPlayers(this.echo.numPlayers);
     this.echo.deck.shuffleCards(this.echo.deck.drawPile.cards);
     this.initActors();
-    this.echo.numPlayers > 2
-      ? this.echo.roundRobinDeal()
-      : this.echo.batchDeal();
+    let dealMethod = undefined;
+    randInt(0, 1) === 0
+      ? (dealMethod = this.echo.roundRobinDeal())
+      : (dealMethod = this.echo.batchDeal());
+    dealMethod;
   }
   initActors() {
     for (const card of this.echo.deck.drawPile.cards) {
