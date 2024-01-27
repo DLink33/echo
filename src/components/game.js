@@ -8,7 +8,7 @@ export class Game {
   constructor() {
     this.isRunning = false;
     this.isPaused = false;
-    this.echo = new Echo({ numPlayers: 4, handSize: 5 }); //create a new game of Echo
+    this.echo = new Echo({ numPlayers: 4, handSize: 22 }); //create a new game of Echo
     this.actors = [];
     this.initGame();
   }
@@ -58,6 +58,7 @@ export class Game {
       this.actors.push(card);
     }
   }
+  updateActors() {}
   flipAllCards() {
     for (const card of this.echo.deck.drawPile.cards) {
       card.flip();

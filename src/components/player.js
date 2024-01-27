@@ -1,5 +1,7 @@
 import { Actor } from './actor.js';
 
+const HAND_BUFFER = 5;
+
 export class Player extends Actor {
   constructor(params = {}) {
     const {
@@ -19,26 +21,40 @@ export class Player extends Actor {
     this.adjacentPlayers = [player2Left, player2Right];
   }
   calculateCardPositions() {
-    let handPos = this.hand.pos;
+    let handPos = this.hand.parent.getPosition();
+    console.log(`Hand Position: ${handPos.x}`);
     let numCards = this.hand.cards.length;
     let cards = this.hand.cards;
     let cardPositions = [];
-    let spacing = 22;
     let cardWidth = 71;
-    let handWidth = cardWidth + (numCards - 1) * spacing;
+    let spacing;
+    let handWidth;
     let currCardPos;
-    if (handPos.theta === 0 || handPos.theta === 180) {
+    if (handPos.theta === 0) {
+      spacing = Math.floor(432 / (numCards + 1));
+      handWidth = (numCards - 1) * spacing + cardWidth;
       for (let i = 0; i < numCards; i++) {
         currCardPos = cards[i].getPosition();
         currCardPos.x =
-          handPos.x + ((1 / 2) * (cardWidth - handWidth) + i * spacing);
+          handPos.x - Math.floor(0.5 * (handWidth - cardWidth)) + spacing * i;
+        cardPositions.push(currCardPos);
+      }
+    } else if (handPos.theta === 180) {
+      spacing = Math.floor(200 / (numCards + 1));
+      handWidth = (numCards - 1) * spacing + cardWidth;
+      for (let i = 0; i < numCards; i++) {
+        currCardPos = cards[i].getPosition();
+        currCardPos.x =
+          handPos.x - Math.floor(0.5 * (handWidth - cardWidth)) + spacing * i;
         cardPositions.push(currCardPos);
       }
     } else {
+      spacing = Math.floor(200 / (numCards + 1));
+      handWidth = (numCards - 1) * spacing + cardWidth;
       for (let i = 0; i < numCards; i++) {
         currCardPos = cards[i].getPosition();
         currCardPos.y =
-          handPos.y + ((1 / 2) * (cardWidth - handWidth) + i * spacing);
+          handPos.y - Math.floor(0.5 * (handWidth - cardWidth)) + spacing * i;
         cardPositions.push(currCardPos);
       }
     }
@@ -49,6 +65,7 @@ export class Player extends Actor {
     for (const card of this.hand.cards) {
       card.moveTo(cardPositions.shift(), 333, 'easeInOutExp');
       if (this.isUser) {
+        // if the card's belong to the User, flip them over
         for (const card of this.hand.cards) {
           if (!card.faceUp) {
             card.flip();

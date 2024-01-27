@@ -122,7 +122,7 @@ export class Deck extends Actor {
       let card = src.cards.pop();
       dest.cards.push(card);
       await card.moveTo(dest.pos, 185, 'easeOutCubic', true);
-      console.log(`The ${card} card was moved to ${dest.parent.name}'s hand`);
+      //console.log(`The ${card} card was moved to ${dest.parent.name}'s hand`); //DEBUG
       dest.parent.adjustCardPositions();
     }
     return;

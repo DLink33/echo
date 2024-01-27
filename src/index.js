@@ -25,6 +25,14 @@ console.log('Game End');
 // Cards are flipped for the User Player
 
 //TODO:
+// I should have an adjustCardPosition method for draw and discard piles to show roughly that a piles is made up of a stack of cards.
+// I need to modify the calcCardPositions method in player class to account for the scenario where there are too many cards to display on the screen given the current spacing.
+// The spacing of the cards should change based on the number of cards in a player's hand
+// AND/OR there should be a maximum width to the hand width and the spacing gets smaller and smaller based on the number of cards to keep the hand displayed within that max hand width.
+
+// Add Echo Title to the Canvas or make special bg for the canvas (or both)
+// Adjust card positions for User so they are easily visible. (Maybe make the hands for the non-user players slightly offscreen to increase clarity of the canvas
+
 // I think I need a way of adjusting the Actors array in the game class.  Right now the cards are not being drawn int the right order for each player.  I would like to change this, but I need to reorder the the actor array, or I need to make the actor array carry more information about draw order.
 
 // I'd like to add an animation for flipping cards. I need to think about how to do that.

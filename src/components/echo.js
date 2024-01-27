@@ -2,8 +2,10 @@ import { Deck } from './deck.js';
 import { Player } from './player.js';
 import { getCanvasDimensions } from '../utils.js';
 
-let DECK_SPACING = 10;
+let DECK_SPACING = 50;
 let CARD_WIDTH = 71;
+let USER_EDGE_BUFFER = 8;
+let EDGE_BUFFER = -8;
 //let CARD_HEIGHT = 100;
 export class Echo {
   constructor(params = {}) {
@@ -45,21 +47,21 @@ export class Echo {
       switch (playerNum) {
         case 0:
           x = canvasWidth / 2;
-          y = canvasHeight - cardHeight / 2;
+          y = canvasHeight - cardHeight / 2 - USER_EDGE_BUFFER;
           theta = 0;
           break;
         case 1:
-          x = canvasWidth - cardHeight / 2;
+          x = canvasWidth - cardHeight / 2 + EDGE_BUFFER;
           y = canvasHeight / 2;
           theta = -90;
           break;
         case 2:
           x = canvasWidth / 2;
-          y = cardHeight / 2;
+          y = cardHeight / 2 - EDGE_BUFFER;
           theta = 180;
           break;
         case 3:
-          x = cardHeight / 2;
+          x = cardHeight / 2 - EDGE_BUFFER;
           y = canvasHeight / 2;
           theta = 90;
           break;
