@@ -1,15 +1,16 @@
-import { clearCanvas, getCanvasCtx } from "../display.js";
-import { Echo } from "./echo.js";
-const FPS = 60;
+import { clearCanvas, getCanvasCtx, drawBg } from '../display.js';
+import { Echo } from './echo.js';
+import { randInt } from '../utils.js';
+
+const FPS = 120;
 
 export class Game {
   constructor() {
     this.isRunning = false;
     this.isPaused = false;
+    this.echo = new Echo({ numPlayers: 4, handSize: 7 }); //create a new game of Echo
     this.actors = [];
-    this.echo = new Echo(); //create a new game of Echo
-    this.initActors(this.echo);
-    //console.log(this.actors); // for debugging
+    this.initGame();
   }
 
   run() {
@@ -28,6 +29,7 @@ export class Game {
     clearCanvas();
     const ctx = getCanvasCtx();
     ctx.save();
+    drawBg();
     for (const currentActor of this.actors) {
       currentActor.draw();
     }
@@ -42,13 +44,33 @@ export class Game {
       this.integrate();
     }, 1000 / FPS);
   }
-  initActors(echoGame) {
-    // this.actors.push(echoGame.deck.drawPile[0]); // just push one card for now
-    this.actors.push(echoGame.deck);
-    //this.actors.push(...echoGame.deck.discardPile);
-    // for (let i = 0; i < echoGame.players.length; i++) {
-    //   const currentPlayer = echoGame.players[i];
-    //   this.actors.push(currentPlayer);
-    // }
+  initGame() {
+    this.echo.createPlayers(this.echo.numPlayers);
+    this.echo.deck.shuffleCards(this.echo.deck.drawPile.cards);
+    this.initActors();
+    let dealMethod = undefined;
+    randInt(0, 1) === 0
+      ? (dealMethod = this.echo.roundRobinDeal())
+      : (dealMethod = this.echo.batchDeal());
+    dealMethod;
+  }
+  initActors() {
+    for (const card of this.echo.deck.drawPile.cards) {
+      this.actors.push(card);
+    }
+  }
+  updateActors() {}
+  flipAllCards() {
+    for (const card of this.echo.deck.drawPile.cards) {
+      card.flip();
+    }
+    for (const card of this.echo.deck.discardPile.cards) {
+      card.flip();
+    }
+    for (const player of this.echo.players) {
+      for (const card of player.hand.cards) {
+        card.flip();
+      }
+    }
   }
 }

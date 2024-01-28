@@ -1,69 +1,83 @@
-import { degToRads } from "./utils.js";
+import { degToRads } from './utils.js';
 
-var CARD_COLORS = ["red", "blue", "green", "yellow"];
-var SPECIAL_CARD_NAMES = ["back1", "back2", "wild", "wild4"];
+var CARD_COLORS = ['red', 'blue', 'green', 'yellow'];
+var SPECIAL_CARD_NAMES = ['back1', 'back2', 'wild', 'wild4'];
 var CARD_SYMBOLS = [
-  "0",
-  "1",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-  "9",
-  "+2",
-  "X",
-  "<->",
+  '0',
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+  '+2',
+  'X',
+  '<->',
 ];
 
 var SPRITE_MAP;
+let BG_IMG;
 
-export async function loadSpriteBoard(spriteBoardImgPath, numRows, numCols) {
-  return new Promise(async (resolve, reject) => {
+export const loadBoardBg = async (bgImgPath) => {
+  BG_IMG = new Image();
+  BG_IMG.src = bgImgPath;
+  await BG_IMG.decode();
+  return BG_IMG;
+};
+
+export function loadSpriteBoard(spriteBoardImgPath, numRows, numCols) {
+  return new Promise((resolve, reject) => {
     try {
       const spriteBoard = new Image();
       spriteBoard.src = spriteBoardImgPath;
-      await spriteBoard.decode(); // Wait for the image to be fully loaded
+      spriteBoard
+        .decode()
+        .then(() => {
+          // Wait for the image to be fully loaded
+          let spriteMap = {};
+          let spriteWidth = spriteBoard.width / numCols;
+          let spriteHeight = spriteBoard.height / numRows;
 
-      let spriteMap = {};
-      let spriteWidth = spriteBoard.width / numCols;
-      let spriteHeight = spriteBoard.height / numRows;
+          // Adds the first row of special sprites to the map
+          for (let k = 0; k < 4; k++) {
+            let name = `${SPECIAL_CARD_NAMES[k]}`;
+            let x = k * spriteWidth;
+            let y = 0;
+            spriteMap[name] = {
+              spriteBoard,
+              x,
+              y,
+              spriteWidth,
+              spriteHeight,
+            };
+          }
 
-      // Adds the first row of special sprites to the map
-      for (let k = 0; k < 4; k++) {
-        let name = `${SPECIAL_CARD_NAMES[k]}`;
-        let x = k * spriteWidth;
-        let y = 0;
-        spriteMap[name] = {
-          spriteBoard,
-          x,
-          y,
-          spriteWidth,
-          spriteHeight,
-        };
-      }
+          // Adds the rest of the sprites to the map
+          for (let i = 1; i < numRows; i++) {
+            for (let j = 0; j < numCols; j++) {
+              let name = `${CARD_COLORS[i - 1]}${CARD_SYMBOLS[j]}`;
+              let x = j * spriteWidth;
+              let y = i * spriteHeight;
+              spriteMap[name] = {
+                spriteBoard,
+                x,
+                y,
+                spriteWidth,
+                spriteHeight,
+              };
+            }
+          }
 
-      // Adds the rest of the sprites to the map
-      for (let i = 1; i < numRows; i++) {
-        for (let j = 0; j < numCols; j++) {
-          let name = `${CARD_COLORS[i - 1]}${CARD_SYMBOLS[j]}`;
-          let x = j * spriteWidth;
-          let y = i * spriteHeight;
-          spriteMap[name] = {
-            spriteBoard,
-            x,
-            y,
-            spriteWidth,
-            spriteHeight,
-          };
-        }
-      }
-
-      SPRITE_MAP = spriteMap;
-      console.log(SPRITE_MAP); // for debugging
-      resolve();
+          SPRITE_MAP = spriteMap;
+          console.log(SPRITE_MAP); // for debugging
+          resolve();
+        })
+        .catch((error) => {
+          reject(error);
+        });
     } catch (error) {
       reject(error);
     }
@@ -71,10 +85,15 @@ export async function loadSpriteBoard(spriteBoardImgPath, numRows, numCols) {
 }
 
 export const getCanvasCtx = () => {
-  const canvas = document.getElementById("display");
-  const ctx = canvas.getContext("2d");
+  const canvas = document.getElementById('display');
+  const ctx = canvas.getContext('2d');
   return ctx;
 };
+
+export async function drawBg() {
+  const ctx = getCanvasCtx();
+  ctx.drawImage(BG_IMG, 0, 0);
+}
 
 export function drawCard(Card) {
   const ctx = getCanvasCtx();
@@ -86,14 +105,12 @@ export function drawCard(Card) {
       key = `${Card.color}${Card.symbol}`;
     }
   } else {
-    key = "back1";
-    //key = "back2"; // if a alternate back design is desired
+    //key = 'back1';
+    key = 'back2'; // if a alternate back design is desired
   }
   let sprite = SPRITE_MAP[key];
-  ctx.translate(
-    Card.pos.x + sprite.spriteWidth / 2,
-    Card.pos.y + sprite.spriteHeight / 2
-  );
+  ctx.save();
+  ctx.translate(Card.pos.x, Card.pos.y);
   ctx.rotate(degToRads(Card.pos.theta));
   ctx.drawImage(
     sprite.spriteBoard,
@@ -106,16 +123,7 @@ export function drawCard(Card) {
     sprite.spriteWidth,
     sprite.spriteHeight
   );
-  ctx.setTransform(1, 0, 0, 1, 0, 0);
-}
-
-export function drawPlayer(Player) {
-  const ctx = getCanvasCtx();
-}
-
-export function drawDeck(Deck) {
-  //TODO: The deck's position is being set correctly, but the cards' positions are not being set to the same as the deck's position
-  drawCard(Deck.drawPile[0]);
+  ctx.restore();
 }
 
 export function clearCanvas(width = 500, height = 500) {
@@ -134,13 +142,14 @@ export class Transform {
   }
   setMove(start, dest, dur, interpol) {
     this.startTime = performance.now();
-    this.startPos = this.current = start;
+    this.startPos = start;
+    this.current = start;
     this.dest = { x: dest.x, y: dest.y, theta: dest.theta };
     this.duration = dur;
     this.interpolMethod = interpol;
   }
   updateCurrent() {
-    const elapsedTime = (performance.now() - this.startTime) / 1000;
+    const elapsedTime = performance.now() - this.startTime;
     let progress = elapsedTime / this.duration;
     if (progress >= 1) {
       this.current = this.dest;
