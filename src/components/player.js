@@ -22,7 +22,6 @@ export class Player extends Actor {
   }
   calculateCardPositions() {
     let handPos = this.hand.parent.getPosition();
-    console.log(`Hand Position: ${handPos.x}`);
     let numCards = this.hand.cards.length;
     let cards = this.hand.cards;
     let cardPositions = [];

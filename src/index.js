@@ -1,8 +1,10 @@
 import { Game } from './components/game.js';
-import { loadSpriteBoard } from './display.js';
+import { loadSpriteBoard, loadBoardBg } from './display.js';
 
-var cardSpriteBoardImgPath = 'src/assets/echo-cards.png';
+const cardSpriteBoardImgPath = 'src/assets/echo-cards.png';
+const echoBackGroundImgPath = 'src/assets/echo-bg.png';
 
+// Load the sprite board
 console.log('Loading Sprite Board...');
 try {
   await loadSpriteBoard(cardSpriteBoardImgPath, 5, 13);
@@ -10,6 +12,15 @@ try {
   console.log(error);
 }
 console.log('Sprite Board Loaded');
+
+// Load the background image
+console.log('Loading Background...');
+try {
+  await loadBoardBg(echoBackGroundImgPath);
+} catch (error) {
+  console.log(error);
+}
+console.log('Background Loaded');
 
 console.log('Game Start...');
 const game = new Game();
@@ -26,9 +37,6 @@ console.log('Game End');
 
 //TODO:
 // I should have an adjustCardPosition method for draw and discard piles to show roughly that a piles is made up of a stack of cards.
-// I need to modify the calcCardPositions method in player class to account for the scenario where there are too many cards to display on the screen given the current spacing.
-// The spacing of the cards should change based on the number of cards in a player's hand
-// AND/OR there should be a maximum width to the hand width and the spacing gets smaller and smaller based on the number of cards to keep the hand displayed within that max hand width.
 
 // Add Echo Title to the Canvas or make special bg for the canvas (or both)
 // Adjust card positions for User so they are easily visible. (Maybe make the hands for the non-user players slightly offscreen to increase clarity of the canvas

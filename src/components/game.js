@@ -1,4 +1,4 @@
-import { clearCanvas, getCanvasCtx } from '../display.js';
+import { clearCanvas, getCanvasCtx, drawBg } from '../display.js';
 import { Echo } from './echo.js';
 import { randInt } from '../utils.js';
 
@@ -8,7 +8,7 @@ export class Game {
   constructor() {
     this.isRunning = false;
     this.isPaused = false;
-    this.echo = new Echo({ numPlayers: 4, handSize: 22 }); //create a new game of Echo
+    this.echo = new Echo({ numPlayers: 4, handSize: 7 }); //create a new game of Echo
     this.actors = [];
     this.initGame();
   }
@@ -29,6 +29,7 @@ export class Game {
     clearCanvas();
     const ctx = getCanvasCtx();
     ctx.save();
+    drawBg();
     for (const currentActor of this.actors) {
       currentActor.draw();
     }

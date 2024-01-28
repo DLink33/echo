@@ -19,6 +19,14 @@ var CARD_SYMBOLS = [
 ];
 
 var SPRITE_MAP;
+let BG_IMG;
+
+export const loadBoardBg = async (bgImgPath) => {
+  BG_IMG = new Image();
+  BG_IMG.src = bgImgPath;
+  await BG_IMG.decode();
+  return BG_IMG;
+};
 
 export function loadSpriteBoard(spriteBoardImgPath, numRows, numCols) {
   return new Promise((resolve, reject) => {
@@ -82,6 +90,11 @@ export const getCanvasCtx = () => {
   return ctx;
 };
 
+export async function drawBg() {
+  const ctx = getCanvasCtx();
+  ctx.drawImage(BG_IMG, 0, 0);
+}
+
 export function drawCard(Card) {
   const ctx = getCanvasCtx();
   let key;
@@ -92,8 +105,8 @@ export function drawCard(Card) {
       key = `${Card.color}${Card.symbol}`;
     }
   } else {
-    key = 'back1';
-    //key = "back2"; // if a alternate back design is desired
+    //key = 'back1';
+    key = 'back2'; // if a alternate back design is desired
   }
   let sprite = SPRITE_MAP[key];
   ctx.save();

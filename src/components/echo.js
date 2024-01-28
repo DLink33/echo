@@ -4,8 +4,8 @@ import { getCanvasDimensions } from '../utils.js';
 
 let DECK_SPACING = 50;
 let CARD_WIDTH = 71;
-let USER_EDGE_BUFFER = 8;
-let EDGE_BUFFER = -8;
+let USER_EDGE_BUFFER = 22;
+let EDGE_BUFFER = 40;
 //let CARD_HEIGHT = 100;
 export class Echo {
   constructor(params = {}) {
@@ -52,7 +52,7 @@ export class Echo {
           break;
         case 1:
           x = canvasWidth - cardHeight / 2 + EDGE_BUFFER;
-          y = canvasHeight / 2;
+          y = canvasHeight / 2 - 22;
           theta = -90;
           break;
         case 2:
@@ -62,7 +62,7 @@ export class Echo {
           break;
         case 3:
           x = cardHeight / 2 - EDGE_BUFFER;
-          y = canvasHeight / 2;
+          y = canvasHeight / 2 - 22;
           theta = 90;
           break;
         default:
