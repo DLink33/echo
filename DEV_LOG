@@ -1,0 +1,23 @@
+STATE OF DEV:
+
+Cards are now adjusting their position according to the number of cards in a hand.
+The hands are being centered properly on their respective sides of the canvas.
+There are now two ways for the dealer to deal cards: Batch and RR. The method is chosen pseudo-randomly.
+Cards are flipped for the User Player.
+
+Cards now have value, and id attributes
+Cards can now be sorted by their "Value".
+Title of game has been added to the Canvas, and the Canvas background is now loaded and drawn.
+
+TODO:
+I should have an adjustCardPosition method for draw and discard piles to show roughly that a piles is made up of a stack of cards.
+
+I would like to change the canvas draw order of the cards to increase visual clarity. To do this, I think I am going to simply move the "active" card to the top of the actors array.
+
+I'd like to add an animation for flipping cards. I need to think about how to do that.
+
+I should probably create the method for "playing" a card which will take a card from a player (flip it if necessary), and place it in the location for the discard pile.
+
+It's about time to implement events. I need the ability for a player to "select" a card to play.
+
+After this, I will probably need to implement the logic for the rules of the game on each turn.

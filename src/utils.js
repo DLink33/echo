@@ -24,6 +24,71 @@ export function getCanvasSize() {
   }
 }
 
+export function arraySort(array, attribute, reverse = false) {
+  function swap(array, index1, index2) {
+    let temp = array[index2];
+    array[index2] = array[index1];
+    array[index1] = temp;
+  }
+  function getNestedProperty(obj, attribute) {
+    return attribute.split('.').reduce((o, k) => o && o[k], obj); // This is a cool trick to get nested properties
+  }
+  for (let i = 1; i < array.length; i++) {
+    for (let j = 0; j < array.length - 1; j++) {
+      let curr = getNestedProperty(array[j], attribute);
+      let next = getNestedProperty(array[j + 1], attribute);
+      reverse
+        ? curr <= next
+          ? swap(array, j, j + 1)
+          : null
+        : curr > next
+          ? swap(array, j, j + 1)
+          : null;
+    }
+  }
+}
+
+export const isSorted = (subArray, reverse = reverse) => {
+  let len = subArray.length;
+  let cond, c, n;
+  for (let i = 0; i < len - 1; i++) {
+    c = subArray[i];
+    n = subArray[i + 1];
+    if (reverse) {
+      cond = c <= n;
+    } else {
+      cond = c > n;
+    }
+    if (cond) {
+      return false;
+    }
+    return true;
+  }
+};
+
+export const bubbleSort = (array, reverse = false) => {
+  const swap = (array, i1, i2) => {
+    let t = array[i2];
+    array[i2] = array[i1];
+    array[i1] = t;
+  };
+  let len = array.length;
+  let c, n;
+  for (let i = 1; i < len; i++) {
+    for (let j = 0; j < len - 1; j++) {
+      c = array[j];
+      n = array[j + 1];
+      reverse
+        ? c <= n
+          ? swap(array, j, j + 1)
+          : null
+        : c > n
+          ? swap(array, j, j + 1)
+          : null;
+    }
+  }
+};
+
 export function getCanvasDimensions() {
   return getCanvasSize();
 }

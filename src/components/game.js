@@ -1,14 +1,14 @@
 import { clearCanvas, getCanvasCtx, drawBg } from '../display.js';
 import { Echo } from './echo.js';
-import { randInt } from '../utils.js';
+import { randInt, arraySort } from '../utils.js';
 
-const FPS = 120;
+const FPS = 60;
 
 export class Game {
   constructor() {
     this.isRunning = false;
     this.isPaused = false;
-    this.echo = new Echo({ numPlayers: 4, handSize: 7 }); //create a new game of Echo
+    this.echo = new Echo({ numPlayers: 4, handSize: 15 }); //create a new game of Echo
     this.actors = [];
     this.initGame();
   }
@@ -24,6 +24,7 @@ export class Game {
     for (const currentActor of this.actors) {
       currentActor.update();
     }
+    this.sortActors();
   }
   draw() {
     clearCanvas();
@@ -59,7 +60,9 @@ export class Game {
       this.actors.push(card);
     }
   }
-  updateActors() {}
+  sortActors() {
+    arraySort(this.actors, 'pos.x', false);
+  }
   flipAllCards() {
     for (const card of this.echo.deck.drawPile.cards) {
       card.flip();

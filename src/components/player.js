@@ -1,6 +1,5 @@
 import { Actor } from './actor.js';
-
-const HAND_BUFFER = 5;
+import { arraySort } from '../utils.js';
 
 export class Player extends Actor {
   constructor(params = {}) {
@@ -40,6 +39,9 @@ export class Player extends Actor {
       }
     } else if (handPos.theta === 180) {
       spacing = Math.floor(200 / (numCards + 1));
+      if (spacing > 22) {
+        spacing = 15;
+      }
       handWidth = (numCards - 1) * spacing + cardWidth;
       for (let i = 0; i < numCards; i++) {
         currCardPos = cards[i].getPosition();
@@ -49,6 +51,9 @@ export class Player extends Actor {
       }
     } else {
       spacing = Math.floor(200 / (numCards + 1));
+      if (spacing > 22) {
+        spacing = 15;
+      }
       handWidth = (numCards - 1) * spacing + cardWidth;
       for (let i = 0; i < numCards; i++) {
         currCardPos = cards[i].getPosition();
@@ -72,6 +77,18 @@ export class Player extends Actor {
         }
       }
     }
+  }
+  sortHandByValue(reverse = false) {
+    arraySort(this.hand.cards, 'value', reverse);
+    this.adjustCardPositions();
+  }
+  sortHandByColor(reverse = false) {
+    arraySort(this.hand.cards, 'color', reverse);
+    this.adjustCardPositions();
+  }
+  sortHandByType(reverse = false) {
+    arraySort(this.hand.cards, 'type', reverse);
+    this.adjustCardPositions();
   }
   toString() {
     return `${this.name}: ${this.hand.cards} `;
