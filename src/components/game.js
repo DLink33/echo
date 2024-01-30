@@ -1,6 +1,6 @@
 import { clearCanvas, getCanvasCtx, drawBg } from '../display.js';
 import { Echo } from './echo.js';
-import { randInt, arraySort } from '../utils.js';
+import { randInt, arraySort, delay } from '../utils.js';
 
 const FPS = 60;
 
@@ -8,7 +8,7 @@ export class Game {
   constructor() {
     this.isRunning = false;
     this.isPaused = false;
-    this.echo = new Echo({ numPlayers: 4, handSize: 15 }); //create a new game of Echo
+    this.echo = new Echo({ numPlayers: 4, handSize: 7 }); //create a new game of Echo
     this.actors = [];
     this.initGame();
   }
@@ -45,7 +45,7 @@ export class Game {
       this.integrate();
     }, 1000 / FPS);
   }
-  initGame() {
+  async initGame() {
     this.echo.createPlayers(this.echo.numPlayers);
     this.echo.deck.shuffleCards(this.echo.deck.drawPile.cards);
     this.initActors();
@@ -54,6 +54,10 @@ export class Game {
       ? (dealMethod = this.echo.roundRobinDeal())
       : (dealMethod = this.echo.batchDeal());
     dealMethod;
+    await delay(1250);
+    this.echo.players[0].sortHandByColor(false);
+    // Move top card from draw pile to discard pile
+    // Determine who goes first
   }
   initActors() {
     for (const card of this.echo.deck.drawPile.cards) {

@@ -5,7 +5,7 @@ import { getCanvasDimensions } from '../utils.js';
 let DECK_SPACING = 50;
 let CARD_WIDTH = 71;
 let USER_EDGE_BUFFER = 22;
-let EDGE_BUFFER = 40;
+let EDGE_BUFFER = 30;
 //let CARD_HEIGHT = 100;
 export class Echo {
   constructor(params = {}) {
@@ -93,14 +93,15 @@ export class Echo {
     this.players[0].isUser = true;
   }
   async batchDeal() {
+    let time = 115; //ms
     for (let j = 0; j < this.numPlayers; j++) {
-      await this.deck.drawCards(this.players[j].hand, this.handSize);
+      await this.deck.drawCards(this.players[j].hand, this.handSize, time);
     }
   }
   async roundRobinDeal() {
     for (let i = 0; i < this.handSize; i++) {
       for (const player of this.players) {
-        await this.deck.drawCards(player.hand, 1);
+        await this.deck.drawCards(player.hand, 1, 125);
       }
     }
   }

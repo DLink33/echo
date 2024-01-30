@@ -65,9 +65,12 @@ export class Player extends Actor {
     return cardPositions;
   }
   async adjustCardPositions() {
+    if (this.isUser) {
+      this.sortHandByColor(false);
+    }
     let cardPositions = this.calculateCardPositions();
     for (const card of this.hand.cards) {
-      card.moveTo(cardPositions.shift(), 333, 'easeInOutExp');
+      card.moveTo(cardPositions.shift(), 350, 'easeInOutExp');
       if (this.isUser) {
         // if the card's belong to the User, flip them over
         for (const card of this.hand.cards) {
@@ -78,17 +81,32 @@ export class Player extends Actor {
       }
     }
   }
-  sortHandByValue(reverse = false) {
+  sortHandByValue(adjust = true, reverse = false) {
     arraySort(this.hand.cards, 'value', reverse);
-    this.adjustCardPositions();
+    if (adjust) {
+      this.adjustCardPositions();
+    }
   }
-  sortHandByColor(reverse = false) {
-    arraySort(this.hand.cards, 'color', reverse);
-    this.adjustCardPositions();
+  sortHandByColor(adjust = true, reverse = false) {
+    const colorOrder = ['red', 'blue', 'yellow', 'green', 'all'];
+    this.hand.cards.sort((a, b) => {
+      const aColorIndex = colorOrder.indexOf(a.color);
+      const bColorIndex = colorOrder.indexOf(b.color);
+      if (aColorIndex === bColorIndex) {
+        return reverse ? b.value - a.value : a.value - b.value;
+      } else {
+        return reverse ? bColorIndex - aColorIndex : aColorIndex - bColorIndex;
+      }
+    });
+    if (adjust) {
+      this.adjustCardPositions();
+    }
   }
-  sortHandByType(reverse = false) {
+  sortHandByType(adjust = true, reverse = false) {
     arraySort(this.hand.cards, 'type', reverse);
-    this.adjustCardPositions();
+    if (adjust) {
+      this.adjustCardPositions();
+    }
   }
   toString() {
     return `${this.name}: ${this.hand.cards} `;

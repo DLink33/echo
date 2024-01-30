@@ -130,7 +130,7 @@ export class Deck extends Actor {
     this.drawPile.cards = [];
     this.createDeck();
   }
-  async transferCards(src, dest, numCards) {
+  async transferCards(src, dest, numCards, ms) {
     if (src.length < numCards) {
       console.log('Not enough cards in source to transfer to destination.');
       return;
@@ -138,46 +138,60 @@ export class Deck extends Actor {
     for (let i = 0; i < numCards; i++) {
       let card = src.cards.pop();
       dest.cards.push(card);
-      await card.moveTo(dest.pos, 185, 'easeOutCubic', true);
+      await card.moveTo(dest.pos, ms, 'easeOutCubic', true);
       //console.log(`The ${card} card was moved to ${dest.parent.name}'s hand`); //DEBUG
-      dest.parent.adjustCardPositions();
     }
+    dest.parent.adjustCardPositions();
+    //TODO: src.parent.adjustCardPositions(); // The source's card positions need to be adjusted as well
     return;
   }
-  async drawCards(hand, numCards = 1) {
+  async drawCards(hand, numCards = 1, ms) {
     let totalDrawableCards =
       this.discardPile.cards.length + this.drawPile.cards.length;
     if (totalDrawableCards >= numCards) {
       if (this.drawPile.cards.length >= numCards) {
-        await this.transferCards(this.drawPile, hand, numCards);
+        await this.transferCards(this.drawPile, hand, numCards, ms);
         return;
       } else {
         let numRemainingCards = numCards - this.drawPile.cards.length;
         await this.transferCards(
           this.drawPile,
           hand,
-          this.drawPile.cards.length
+          this.drawPile.cards.length,
+          ms
         );
         await this.transferCards(
           this.discardPile,
           this.drawPile,
-          this.discardPile.cards.length
+          this.discardPile.cards.length,
+          ms
         );
         this.shuffleCards(this.drawPile);
-        await this.transferCards(this.drawPile, hand, numRemainingCards);
+        await this.transferCards(this.drawPile, hand, numRemainingCards, ms);
         return;
       }
     } else {
-      await this.transferCards(this.drawPile, hand, this.drawPile.cards.length);
+      await this.transferCards(
+        this.drawPile,
+        hand,
+        this.drawPile.cards.length,
+        ms
+      );
       this.shuffleCards(this.discardPile);
       await this.transferCards(
         this.discardPile,
         hand,
-        this.discardPile.cards.length
+        this.discardPile.cards.length,
+        ms
       );
       return;
     }
   }
+
+  async adjustCardPositions() {
+    //TODO: Implement this
+  }
+
   async discardCards(hand, numCards = 1) {
     await this.transferCards(hand, this.discardPile, numCards);
     return;

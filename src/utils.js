@@ -24,26 +24,32 @@ export function getCanvasSize() {
   }
 }
 
-export function arraySort(array, attribute, reverse = false) {
+export function arraySort(
+  array,
+  attribute,
+  reverse = false,
+  customOrder = null
+) {
   function swap(array, index1, index2) {
     let temp = array[index2];
     array[index2] = array[index1];
     array[index1] = temp;
   }
   function getNestedProperty(obj, attribute) {
-    return attribute.split('.').reduce((o, k) => o && o[k], obj); // This is a cool trick to get nested properties
+    return attribute.split('.').reduce((o, k) => o && o[k], obj);
   }
   for (let i = 1; i < array.length; i++) {
     for (let j = 0; j < array.length - 1; j++) {
       let curr = getNestedProperty(array[j], attribute);
       let next = getNestedProperty(array[j + 1], attribute);
-      reverse
-        ? curr <= next
-          ? swap(array, j, j + 1)
-          : null
-        : curr > next
-          ? swap(array, j, j + 1)
-          : null;
+      let comparison;
+      if (customOrder) {
+        comparison = customOrder.indexOf(curr) - customOrder.indexOf(next);
+      } else {
+        comparison = curr > next ? 1 : -1;
+      }
+      reverse ? (comparison *= -1) : null;
+      comparison > 0 ? swap(array, j, j + 1) : null;
     }
   }
 }
