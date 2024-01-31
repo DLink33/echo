@@ -36,7 +36,7 @@ export class Actor {
       });
     }
   }
-  async moveTo(destination, duration, interpolation, async = false) {
+  async moveTo(destination, duration, interpolation) {
     const interpolMethod = interpolationFuncs[interpolation];
     if (!interpolMethod) {
       throw new Error(`Unknown interpolation method: ${interpolation}`);
@@ -47,8 +47,6 @@ export class Actor {
       duration,
       interpolMethod
     );
-    if (async) {
-      await delay(duration);
-    }
+    await delay(duration);
   }
 }

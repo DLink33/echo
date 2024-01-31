@@ -93,7 +93,7 @@ export class Echo {
     this.players[0].isUser = true;
   }
   async batchDeal() {
-    let time = 115; //ms
+    let time = 150; //ms
     for (let j = 0; j < this.numPlayers; j++) {
       await this.deck.drawCards(this.players[j].hand, this.handSize, time);
     }
@@ -101,7 +101,7 @@ export class Echo {
   async roundRobinDeal() {
     for (let i = 0; i < this.handSize; i++) {
       for (const player of this.players) {
-        await this.deck.drawCards(player.hand, 1, 125);
+        await this.deck.drawCards(player.hand, 1, 165);
       }
     }
   }

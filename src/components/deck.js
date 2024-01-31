@@ -8,8 +8,8 @@ export class Deck extends Actor {
     const { pos = { x: 0, y: 0, theta: 0 }, vel = { vx: 0, vy: 0, omega: 0 } } =
       params || {};
     super({ pos, vel });
-    this.drawPile = { cards: [], pos: pos };
-    this.discardPile = { cards: [], pos: pos };
+    this.drawPile = { cards: [], pos: pos, parent: this };
+    this.discardPile = { cards: [], pos: pos, parent: this };
     this.createDeck();
   }
   createDeck() {
@@ -138,11 +138,11 @@ export class Deck extends Actor {
     for (let i = 0; i < numCards; i++) {
       let card = src.cards.pop();
       dest.cards.push(card);
-      await card.moveTo(dest.pos, ms, 'easeOutCubic', true);
+      await card.moveTo(dest.pos, ms, 'easeOutCubic');
       //console.log(`The ${card} card was moved to ${dest.parent.name}'s hand`); //DEBUG
     }
-    dest.parent.adjustCardPositions();
-    //TODO: src.parent.adjustCardPositions(); // The source's card positions need to be adjusted as well
+    await src.parent.adjustCardPositions();
+    await dest.parent.adjustCardPositions();
     return;
   }
   async drawCards(hand, numCards = 1, ms) {
@@ -189,7 +189,21 @@ export class Deck extends Actor {
   }
 
   async adjustCardPositions() {
-    //TODO: Implement this
+    let numCards = 5;
+    let currCard;
+    let pos;
+    if (this.drawPile.cards.length < numCards) {
+      numCards = this.drawPile.cards.length;
+    }
+    for (let i = 0; i < numCards; i++) {
+      currCard = this.drawPile.cards[this.drawPile.cards.length - 1 - i];
+      pos = {
+        x: this.drawPile.pos.x - i * 4,
+        y: this.drawPile.pos.y,
+        theta: this.drawPile.pos.theta,
+      };
+      currCard.moveTo(pos, 150, 'linear');
+    }
   }
 
   async discardCards(hand, numCards = 1) {
