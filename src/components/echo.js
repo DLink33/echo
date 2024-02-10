@@ -1,6 +1,7 @@
 import { Deck } from './deck.js';
 import { Player } from './player.js';
 import { getCanvasDimensions } from '../utils.js';
+import { TestDeck } from './testDeck.js';
 
 let DECK_SPACING = 50;
 let CARD_WIDTH = 71;
@@ -14,16 +15,29 @@ export class Echo {
       handSize = 7,
       rounds = 1,
       trackScore = false,
+      test = false,
     } = params || {};
-    this.deck = new Deck({
-      pos: {
-        x: Math.ceil(
-          (getCanvasDimensions().width - CARD_WIDTH - DECK_SPACING) / 2
-        ),
-        y: getCanvasDimensions().height / 2,
-        theta: 0,
-      },
-    });
+    if (test) {
+      this.deck = new TestDeck({
+        pos: {
+          x: Math.ceil(
+            (getCanvasDimensions().width - CARD_WIDTH - DECK_SPACING) / 2
+          ),
+          y: getCanvasDimensions().height / 2,
+          theta: 0,
+        },
+      });
+    } else {
+      this.deck = new Deck({
+        pos: {
+          x: Math.ceil(
+            (getCanvasDimensions().width - CARD_WIDTH - DECK_SPACING) / 2
+          ),
+          y: getCanvasDimensions().height / 2,
+          theta: 0,
+        },
+      });
+    }
     this.players = [];
     this.numPlayers = numPlayers;
     this.handSize = handSize;

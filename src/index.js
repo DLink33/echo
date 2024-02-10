@@ -23,8 +23,7 @@ try {
 console.log('Background Loaded');
 
 console.log('Game Start...');
-const game = new Game();
+const game = new Game(true);
 window.game = game; // for debugging
-//game.flipAllCards();
 game.run();
 console.log('Game End');

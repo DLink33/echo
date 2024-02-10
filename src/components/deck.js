@@ -187,7 +187,6 @@ export class Deck extends Actor {
       return;
     }
   }
-
   async adjustCardPositions() {
     let numCards = 5;
     let currCard;
@@ -196,16 +195,16 @@ export class Deck extends Actor {
       numCards = this.drawPile.cards.length;
     }
     for (let i = 0; i < numCards; i++) {
-      currCard = this.drawPile.cards[this.drawPile.cards.length - 1 - i];
+      //currCard = this.drawPile.cards[this.drawPile.cards.length - 1 - i];
+      currCard = this.drawPile.cards[i];
       pos = {
         x: this.drawPile.pos.x - i * 4,
         y: this.drawPile.pos.y,
         theta: this.drawPile.pos.theta,
       };
-      currCard.moveTo(pos, 150, 'linear');
+      currCard.moveTo(pos, 0, 'linear');
     }
   }
-
   async discardCards(hand, numCards = 1) {
     await this.transferCards(hand, this.discardPile, numCards);
     return;

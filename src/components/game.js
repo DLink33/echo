@@ -5,12 +5,16 @@ import { randInt, arraySort, delay } from '../utils.js';
 const FPS = 60;
 
 export class Game {
-  constructor() {
+  constructor(test = false) {
     this.isRunning = false;
     this.isPaused = false;
-    this.echo = new Echo({ numPlayers: 4, handSize: 7 }); //create a new game of Echo
+    this.test = test;
+    this.echo = new Echo({ numPlayers: 4, handSize: 3, test: this.test }); //create a new game of Echo
     this.actors = [];
-    this.initGame();
+    this.initGame(this.test);
+    if (this.test) {
+      this.flipAllCards();
+    }
   }
 
   run() {
@@ -45,9 +49,12 @@ export class Game {
       this.integrate();
     }, 1000 / FPS);
   }
-  async initGame() {
+  async initGame(test) {
     this.echo.createPlayers(this.echo.numPlayers);
-    this.echo.deck.shuffleCards(this.echo.deck.drawPile.cards);
+    if (!test) {
+      this.echo.deck.shuffleCards(this.echo.deck.drawPile.cards);
+    }
+    this.echo.deck.adjustCardPositions();
     this.initActors();
     let dealMethod = undefined;
     randInt(0, 1) === 0
