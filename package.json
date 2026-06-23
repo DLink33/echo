@@ -26,7 +26,7 @@
   "homepage": "https://github.com/DLink33/echo#readme",
   "devDependencies": {
     "eslint": "^8.56.0",
-    "jest": "^29.7.0",
+    "jest": "^30.4.2",
     "prettier": "^3.2.1"
   }
 }
